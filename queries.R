@@ -1,8 +1,10 @@
 require(SPARQL)
+require(tibble)
+
 site <- 'IT3270023'
 endpoint <- "http://fuseki1.get-it.it/ecoss/query"
 
-jqEndopoint <- 'https://deims.org/api/sites/2e6014fe-8f3b-4127-8ab1-405ae1303281'
+jqEndpoint <- 'https://deims.org/api/sites/2e6014fe-8f3b-4127-8ab1-405ae1303281'
 jq <- '.[0]|{site_uri:"\(.id.prefix)\(.id.suffix)", site_title:.title, param: .attributes.focusDesignScale.parameters[]} |
   [.site_uri, .site_title, .param.uri, .param.label] |
   "<\(.[0])> ecoss:observes <\(.[2])> ."'
@@ -20,7 +22,7 @@ prefix <- 'PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
 dataSources <- list(
   habitats = list(
     prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
-    q = "SELECT ?habitats
+    q = "SELECT ?site ?habitats
       WHERE{
         BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
         SERVICE <https://semantic.eea.europa.eu/sparql>{
@@ -30,7 +32,7 @@ dataSources <- list(
   species = list(
     prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
     q = "PREFIX eunishabitats: <http://eunis.eea.europa.eu/habitats/>
-      SELECT ?species
+      SELECT ?site ?species
       WHERE{
         BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
         SERVICE <https://semantic.eea.europa.eu/sparql>{
@@ -44,16 +46,15 @@ composeQuery <- function (siteCode, q) {
   return(gsub("$SITECODE$", siteCode, gsub("\n", "", paste(prefix, q)), fixed = T))
 }
 entities <- names(dataSources)
-results <- list()
+#results <- list()
 # n='habitats'
 for (n in entities) {
   x <- dataSources[[n]]
   query <- composeQuery(siteCode = site, q = x$q)
   ns <- x$prefix
-  results[[n]] <- SPARQL::SPARQL(url = endpoint, 
+  dataSources[[n]]$results<-as_tibble((SPARQL::SPARQL(url = endpoint, 
                                   query = query,
-                                  ns = ns
-  )$results
+                                  ns = ns)$results)
+  )
 }
-
 
