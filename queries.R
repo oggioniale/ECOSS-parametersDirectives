@@ -4,8 +4,55 @@ require(dplyr)
 
 #site <- 'IT3270023'
 
-db<-function(){
-  # internal variables
+db_ecoss<-function(sparqlEndpoint){
+  self<-list()
+  # constants
+  {
+    endpoint <- sparqlEndpoint
+    
+    GENERAL_prefix <- 'PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX eunisspeciesschema: <http://eunis.eea.europa.eu/rdf/species-schema.rdf#>
+    PREFIX eunissitesschema: <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
+    PREFIX eunishabitatsschema: <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>
+    PREFIX eunisspecies: <http://eunis.eea.europa.eu/species/>
+    PREFIX eunishabitats: <http://eunis.eea.europa.eu/habitats/>
+    PREFIX eunissites: <http://eunis.eea.europa.eu/sites/>'
+    
+    # SET this list with structures of the form:
+    #     - prefix (it is the prefix of namespaces of the response to the query)
+    #     - q: the sparql query
+    dataSources<-list(
+      m2m_sites_habitats = list(
+        prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
+        q = "SELECT ?site ?habitats
+        WHERE{
+        BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
+        SERVICE <https://semantic.eea.europa.eu/sparql>{
+        ?site eunissitesschema:hasHabitatType ?habitats.
+        }
+        }"),
+      m2m_sites_species = list(
+        prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
+        q = "PREFIX eunishabitats: <http://eunis.eea.europa.eu/habitats/>
+    SELECT ?site ?species
+    WHERE{
+    BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
+    SERVICE <https://semantic.eea.europa.eu/sparql>{
+    ?site eunissitesschema:hasSpecies ?species.
+    }
+    }")
+    )
+  }
+  
+  # internal functions
+  {
+    composeQuery <- function (siteCode, q) {
+      return(gsub("$SITECODE$", siteCode, gsub("\n", "", paste(GENERAL_prefix, q)), fixed = T))
+    }
+  }
+  # instance variables (internal)
   {
     dt_sites = 
       tibble::tribble(
@@ -35,107 +82,75 @@ db<-function(){
   }
   
   init<-function(){
+    
     tryCatch({
+      res<-list()
       # PUT CODE TO INIT entities here
+      entities <- names(dataSources)
+      sites <- dt_sites %>%  filter(N2KNetwork) %>% select(siteCodeN2K) %>% as.data.frame()
+      for (n in entities) {
+        #n<-'m2m_site_habitats'
+        res[[n]]<-NULL
+        for(s in sites$siteCodeN2K){
+          #s<-sites[3,1]
+          x <- dataSources[[n]]
+          query <- composeQuery(siteCode = s, q = x$q)
+          ns <- x$prefix
+          
+          if(is.null(res[[n]])){
+            res[[n]]<-as_tibble((SPARQL::SPARQL(url = endpoint, 
+                                                               query = query,
+                                                               ns = ns)$results))
+          }
+          else{
+            res[[n]]<-
+              res[[n]] %>% bind_rows(as_tibble((SPARQL::SPARQL(url = endpoint, 
+                                                                              query = query,
+                                                                              ns = ns)$results)
+              ))
+          }
+        }
+      }
+      #print(res)
+      
+      m2m_sites_species<<-res[["m2m_sites_species"]]
+      m2m_sites_habitats<<-res[["m2m_sites_habitats"]]
+      rm(res)
     },
     error=function(e){
       warning(e)
     },
     finally=function(){
       message("DB object initialized")
-      
     })
+    
   } 
   init()
   
+  # export variables
+  {
+    self$dt_sites<-function(){dt_sites}
+    self$m2m_sites_species<-function(){m2m_sites_species}
+    self$m2m_sites_habitats<-function(){m2m_sites_habitats}
+  } 
   
+  return(self)
 }
 
-
-endpoint <- "http://fuseki1.get-it.it/ecoss/query"
-
-jqEndpoint <- 'https://deims.org/api/sites/2e6014fe-8f3b-4127-8ab1-405ae1303281'
-jq <- '.[0]|{site_uri:"\(.id.prefix)\(.id.suffix)", site_title:.title, param: .attributes.focusDesignScale.parameters[]} |
-  [.site_uri, .site_title, .param.uri, .param.label] |
-  "<\(.[0])> ecoss:observes <\(.[2])> ."'
-
-
-GENERAL_prefix <- 'PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
-      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-      PREFIX eunisspeciesschema: <http://eunis.eea.europa.eu/rdf/species-schema.rdf#>
-      PREFIX eunissitesschema: <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
-      PREFIX eunishabitatsschema: <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>
-      PREFIX eunisspecies: <http://eunis.eea.europa.eu/species/>
-      PREFIX eunishabitats: <http://eunis.eea.europa.eu/habitats/>
-      PREFIX eunissites: <http://eunis.eea.europa.eu/sites/>'
-dataSources<-list(
-m2m_site_habitats = list(
-  prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
-  q = "SELECT ?site ?habitats
-      WHERE{
-        BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
-        SERVICE <https://semantic.eea.europa.eu/sparql>{
-          ?site eunissitesschema:hasHabitatType ?habitats.
-        }
-      }"),
-m2m_site_species = list(
-  prefix = c('eunishabitatsschema', '<http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>'),
-  q = "PREFIX eunishabitats: <http://eunis.eea.europa.eu/habitats/>
-      SELECT ?site ?species
-      WHERE{
-        BIND(<http://eunis.eea.europa.eu/sites/$SITECODE$> as ?site)
-        SERVICE <https://semantic.eea.europa.eu/sparql>{
-          ?site eunissitesschema:hasSpecies ?species.
-        }
-      }")
-)
-
-
-composeQuery <- function (siteCode, q) {
-  return(gsub("$SITECODE$", siteCode, gsub("\n", "", paste(GENERAL_prefix, q)), fixed = T))
-}
-entities <- names(dataSources)
-#results <- list()
-# n='habitats'
-
-sites<-
-  dt_sites %>%  filter(N2KNetwork) %>% select(siteCodeN2K) %>% as.data.frame()
-
-# TODO: move this code in init function within object constructor
-for (n in entities) {
-  #n<-'m2m_site_habitats'
-  dataSources[[n]]$result<-NULL
-  for(s in sites$siteCodeN2K){
-    #s<-sites[3,1]
-    x <- dataSources[[n]]
-    query <- composeQuery(siteCode = s, q = x$q)
-    ns <- x$prefix
-    
-    if(is.null(dataSources[[n]]$result)){
-      dataSources[[n]]$result<-as_tibble((SPARQL::SPARQL(url = endpoint, 
-                                        query = query,
-                                        ns = ns)$results))
-    }
-    else{
-      dataSources[[n]]$result<-
-        dataSources[[n]]$result %>% bind_rows(as_tibble((SPARQL::SPARQL(url = endpoint, 
-                                                      query = query,
-                                                      ns = ns)$results)
-      ))
-    }
-  }
-}
-
+# example usage
+if(FALSE){
+  db<-db_ecoss("http://fuseki1.get-it.it/ecoss/query")
   
-  result<-result %>% bind_rows(results2)
-  result %>% View()
-  # x <- dataSources[[n]]
-  # query <- composeQuery(siteCode = site, q = x$q)
-  # ns <- x$prefix
-  # dataSources[[n]]$results<-as_tibble((SPARQL::SPARQL(url = endpoint, 
-  #                                                     query = query,
-  #                                                     ns = ns)$results)
-  # )
+  db$dt_sites()
+  db$m2m_sites_species()
+  db$m2m_sites_habitats()
+}
 
 
+if(FALSE){
+# jqEndpoint <- 'https://deims.org/api/sites/2e6014fe-8f3b-4127-8ab1-405ae1303281'
+# jq <- '.[0]|
+#         {site_uri:"\(.id.prefix)\(.id.suffix)", site_title:.title, param: .attributes.focusDesignScale.parameters[]} |
+#         [.site_uri, .site_title, .param.uri, .param.label] |
+#         "<\(.[0])> ecoss:observes <\(.[2])> ."'
+}
