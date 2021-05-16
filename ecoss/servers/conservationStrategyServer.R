@@ -127,12 +127,12 @@ output$tblStrategyHabitats <- DT::renderDataTable({
   )
 })
 
-# ECOSS Recommended Parameters tblEcossParamRecom #####
+# ECOSS Recommended Variables but not measured tblEcossParamRecom #####
 output$tblEcossParamRecom <- DT::renderDataTable({
-  dfVarsRecom <- allVarsRecom %>% 
-    # dplyr::filter(
-    #   habitat_label %in% habitatForSite
-    # ) %>%
+  dfVarsRecom <- allVarsECOSS %>% 
+    dplyr::filter(
+      is.na(isMeasured)
+    ) %>%
     mutate(
       `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
     ) %>% 
@@ -157,18 +157,18 @@ output$tblEcossParamRecom <- DT::renderDataTable({
   )
 })
 
-# Parameters Measured tblParamMeasured #####
+# ECOSS Recommended Variables that are measured tblParamMeasured #####
 output$tblParamMeasured <- DT::renderDataTable({
-  dfVarsMeasured <- allVarsMeasured # %>% 
-    # dplyr::filter(
-    #   habitat_label %in% habitatForSite
-    # ) %>%
-    # mutate(
-    #   `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
-    # ) %>% 
-    # dplyr::select(
-    #   `ECOSS variable`
-    # )
+  dfVarsMeasured <- allVarsECOSS %>% 
+    dplyr::filter(
+      isMeasured == TRUE
+    ) %>%
+    mutate(
+      `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
+    ) %>% 
+    dplyr::select(
+      `ECOSS variable`
+    )
   actionVarsMeasured <- DT::dataTableAjax(session, dfVarsMeasured, outputId = "tblParamMeasured")
   
   DT::datatable(

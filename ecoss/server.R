@@ -9,9 +9,26 @@
 shinyServer(function(input, output, session) {
   
   output$testo <- renderText({
-      queryString <- parseQueryString(session$clientData$url_search)
-      siteId <- queryString$site
-      siteId
+    # deimsId()
+    id = n2kId()
+    return(id)
+  })
+  
+  deimsId <- reactive({
+    queryString <- parseQueryString(session$clientData$url_search)
+    siteId <- queryString$siteid
+    if (is.null(siteId)) {
+      siteId = defaultDeimsId
+    }
+    return(siteId)
+  })
+  
+  n2kId <- reactive({
+    n2kId <- dt_sites %>% 
+      dplyr::filter(siteCodeDEIMS == deimsId()) %>% 
+      dplyr::select(siteCodeN2K) %>% 
+      dplyr::pull()
+    return(n2kId)
   })
   
   # for Queries ######
@@ -20,7 +37,9 @@ shinyServer(function(input, output, session) {
   fusekiEcoss <- "http://fuseki1.get-it.it/ecoss/query"
   
   # to be define!!!! #####
-  queryConserv <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  
+  queryConserv <- reactive({
+    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                    PREFIX eunissiteswebpages: <https://eunis.eea.europa.eu/sites/>
@@ -32,7 +51,9 @@ shinyServer(function(input, output, session) {
                    # dato un sito, restituisco elenco di tutti i parametri MSDF che hanno corrispondenza con degli envthes parameters che il sito, su DEIMS, dichiara di osservare. Riporto il numero di tali envthes parameters.
                    select ?msfd_Parameter_label ?msfd_criteria (sample(?msfd_criteria_label) as ?msfd_criteria_label1) (count(?envthesparam_label) as ?numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)
                    where {
-                     bind(<https://deims.org/2e6014fe-8f3b-4127-8ab1-405ae1303281> as ?site)
+                     bind(<https://deims.org/",
+               deimsId(),
+               "> as ?site)
                      ?site ecoss:observes ?envthesparam .
                      SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
                        	GRAPH <urn:x-evn-master:EnvThes>{
@@ -49,17 +70,20 @@ shinyServer(function(input, output, session) {
                      ?msfd_Parameter ecoss:contributesToEvaluate ?msfd_criteria .
                        ?msfd_criteria skos:prefLabel ?msfd_criteria_label .
                    }
-                   group by ?msfd_Parameter_label ?msfd_criteria"
+                   group by ?msfd_Parameter_label ?msfd_criteria")
+    return(q)
+    })
   
-  contrib <- SPARQL::SPARQL(
+  contrib <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = queryConserv
+    query = queryConserv()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
   
   
   # query for site info #####
-  querySite <-  "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  querySite <-  reactive({
+    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                  PREFIX eunissiteswebpages: <https://eunis.eea.europa.eu/sites/>
@@ -70,23 +94,28 @@ shinyServer(function(input, output, session) {
                  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                  # query per info aggiuntive del sito (sostituire l'uri in 'bind')
                  select distinct ?site ?site_name ?site_manager ?site_respondent where{
-                   bind(<http://eunis.eea.europa.eu/sites/IT3330009> as ?site)
+                   bind(<http://eunis.eea.europa.eu/sites/",
+               n2kId(),
+               "> as ?site)
                    #?any ecoss:recommendedForSite ?site .
                    service <https://semantic.eea.europa.eu/sparql>{      
                      ?site eunissitesSchema:name ?site_name .
                      optional{?site eunissitesSchema:respondent ?site_respondent .}
                      optional{?site eunissitesSchema:manager ?site_manager .}     
                    }
-                 }"
+                 }")
+               return(q)
+               })
   
-  siteInfo <- SPARQL::SPARQL(
+  siteInfo <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = querySite
+    query = querySite()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
   
   # query for specie info #####
-  querySpecie <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  querySpecie <- reactive({
+  q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                  PREFIX eunissiteswebpages: <https://eunis.eea.europa.eu/sites/>
@@ -97,23 +126,27 @@ shinyServer(function(input, output, session) {
                  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                  # query per info aggiuntive del sito (sostituire l'uri in 'bind')
                  select distinct ?site ?species ?species_label ?species_PESI where{
-                   bind(<http://eunis.eea.europa.eu/sites/IT3330009> as ?site)
+                   bind(<http://eunis.eea.europa.eu/sites/",
+                   n2kId(), "> as ?site)
                    #?any ecoss:recommendedForSite ?site .
                    service <https://semantic.eea.europa.eu/sparql>{      
                      ?site eunissitesSchema:hasSpecies ?species .
                      ?species <http://www.w3.org/2000/01/rdf-schema#label> ?species_label .
                      optional{?species  eunisspecies:sameSynonymPESI ?species_PESI .}
                    }
-                 }"
+                 }")
+  return(q)
+  })
   
-  specieInfo <- SPARQL::SPARQL(
+  specieInfo <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = querySpecie
+    query = querySpecie()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
   
   # query for habitat info #####
-  queryHabitat <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  queryHabitat <- reactive({
+    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                    PREFIX eunissiteswebpages: <https://eunis.eea.europa.eu/sites/>
@@ -123,23 +156,27 @@ shinyServer(function(input, output, session) {
                    PREFIX ssn: <https://www.w3.org/TR/vocab-ssn/#>
                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                    select distinct ?site ?habitat ?habitat_label ?habitat_description where{
-                     bind(<http://eunis.eea.europa.eu/sites/IT3330009> as ?site)
+                     bind(<http://eunis.eea.europa.eu/sites/",
+               n2kId(), "> as ?site)
                      #?any ecoss:recommendedForSite ?site .
                      service <https://semantic.eea.europa.eu/sparql>{      
                        ?site eunissitesSchema:hasHabitatType ?habitat .
                        ?habitat <http://www.w3.org/2000/01/rdf-schema#label> ?habitat_label .
                        optional{?habitat <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#description> ?habitat_description .}
                      }
-                  }"
+                  }")
+    return(q)
+  })
   
-  habitatInfo <- SPARQL::SPARQL(
+  habitatInfo <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = queryHabitat
+    query = queryHabitat()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
   
   # query for extract ECOSS recommended variables for the site ######
-  queryConservEcoss <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  queryConservEcoss <- reactive({
+    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                         PREFIX eunissitesSchema: <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
                         PREFIX eunissites: <http://eunis.eea.europa.eu/sites/>
@@ -149,7 +186,8 @@ shinyServer(function(input, output, session) {
                           #  1. tutte le variabili ecoss raccomandate per il sito
                           select ?n2k_site_uri ?ecos_var_label ?ecos_var_uri
                         where {
-                          bind(eunissites:HR3000161 as ?n2k_site_uri) #CRES-LOSINI
+                          bind(eunissites:",
+               n2kId(), " as ?n2k_site_uri) #CRES-LOSINI
                           #service <https://semantic.eea.europa.eu/sparql>{      
                           #  ?site eunissitesSchema:name ?site_name .    
                           #}
@@ -157,16 +195,19 @@ shinyServer(function(input, output, session) {
                           ?ecos_var_uri a ecoss:ecoss_Variable ;
                           ecoss:recommendedForSite ?n2k_site_uri;
                           skos:prefLabel ?ecos_var_label .
-                        }"
+                        }")
+    return(q)
+  })
   
-  allVarsRecom <- SPARQL::SPARQL(
+  allVarsRecom <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = queryConservEcoss
+    query = queryConservEcoss()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
   
   # query for extract ECOSS recommended variables measured in the site #####
-  queryConservEcossMeasured <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+  queryConservEcossMeasured <- reactive({
+    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                                 PREFIX eunissitesSchema: <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
                                 PREFIX eunissites: <http://eunis.eea.europa.eu/sites/>
@@ -176,8 +217,12 @@ shinyServer(function(input, output, session) {
                                 #  2. tutte le variabili ecoss raccomandate per il sito che effettivamente il sito dichiara di osservare.
                                 select ?n2k_site_uri ?deims_site_uri ?ecos_var_label ?ecos_var_uri ?envthesMatch ?envthesMatch_label
                                 where {
-                                bind(eunissites:HR3000161 as ?n2k_site_uri) #CRES-LOSINI
-                                bind(<https://deims.org/2e6014fe-8f3b-4127-8ab1-405ae1303281> as ?deims_site_uri) #questa corrispondenza va costruita a mano (ossia: in R) finché non la inseriamo in triple.
+                                bind(eunissites:",
+                                n2kId(),
+                                " as ?n2k_site_uri)
+                                bind(<https://deims.org/",
+                                deimsId(),
+                                "> as ?deims_site_uri) #questa corrispondenza va costruita a mano (ossia: in R) finché non la inseriamo in triple.
                                 #service <https://semantic.eea.europa.eu/sparql>{      
                                 #  ?site eunissitesSchema:name ?site_name .    
                                 #}
@@ -193,19 +238,28 @@ shinyServer(function(input, output, session) {
                                   FILTER(LANG(?envthesMatch_label)='en')
                                 }  
                                 ?deims_site_uri ecoss:observes ?envthesMatch
-                              }"
+                              }")
+  })
   
-  allVarsMeasured <- SPARQL::SPARQL(
+  allVarsMeasured <- reactive({SPARQL::SPARQL(
     url = fusekiEcoss, 
-    query = queryConservEcossMeasured
+    query = queryConservEcossMeasured()
   )$results %>% 
-    as_tibble()
+    as_tibble()})
+  
+  allVarsECOSS <- reactive({allVarsRecom() %>%
+    dplyr::left_join(
+      allVarsMeasured() %>% 
+        dplyr::mutate(isMeasured = TRUE) %>% 
+        dplyr::select(-ecos_var_label, -deims_site_uri, -envthesMatch, -envthesMatch_label)
+      ) %>% 
+    unique()})
 
   # some global info #####
-  siteName <- siteInfo$site_name
-  siteManager <- siteInfo$site_manager
-  siteRespondent <- siteInfo$site_respondent
-  siteUrl <- sub('>', '', sub('<', '', siteInfo$site))
+  siteName <- reactive({siteInfo()$site_name})
+  siteManager <- reactive({siteInfo()$site_manager})
+  siteRespondent <- reactive({siteInfo()$site_respondent})
+  siteUrl <- reactive({sub('>', '', sub('<', '', siteInfo()$site))})
   
   # Server fixed station #####
   source("servers/contributeDirectiveServer.R", local = TRUE)$value

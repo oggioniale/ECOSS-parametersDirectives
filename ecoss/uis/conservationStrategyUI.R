@@ -15,12 +15,7 @@ tabItem(
         tags$p("..."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
-      column(12,
-             introBox(
-               htmlOutput("siteInfoStrategy"),
-               data.step = 1,
-               data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
-             )
+      column(12, htmlOutput("siteInfoStrategy")
       )
     ),
     boxPlus(
@@ -37,12 +32,7 @@ tabItem(
         tags$p("..."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
-      column(12,
-             introBox(
-               visNetwork::visNetworkOutput("network"),
-               data.step = 2,
-               data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
-             )
+      column(12, visNetwork::visNetworkOutput("network")
       )
     ),
     fluidRow(

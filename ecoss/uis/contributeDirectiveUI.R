@@ -15,12 +15,7 @@ tabItem(
         tags$p("..."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
-      column(12,
-             introBox(
-               htmlOutput("siteInfoContrib"),
-               data.step = 1,
-               data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
-             )
+      column(12, htmlOutput("siteInfoContrib")
       )
     ),
     boxPlus(
@@ -37,12 +32,7 @@ tabItem(
         tags$p("..."),
         tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
       ),
-      column(12,
-             introBox(
-               plotly::plotlyOutput("sankeyPlot"),
-               data.step = 1,
-               data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
-             )
+      column(12, plotly::plotlyOutput("sankeyPlot")
       )
     ),
     fluidRow(
@@ -60,8 +50,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(12,
-               DT::dataTableOutput('tblContrib')
+        column(12, DT::dataTableOutput('tblContrib')
         )
       )
     )

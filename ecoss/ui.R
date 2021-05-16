@@ -1,29 +1,14 @@
 ###
 # Library
 ###
-library(ggplot2)
 library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
-library(leaflet)
-library(xslt)
-library(xml2)
 library(DT)
 library(shinycssloaders)
-library(crosstalk)
-library(shinyjs)
-library(shinyBS)
-library(leaflet.extras)
-library(mapview)
-library(mapedit)
-library(httr)
-library(jsonlite)
-library(rintrojs)
-library(fs)
 library(shinyalert)
-# remotes::install_github("rstudio/shinyvalidate")
-library(shinyvalidate)
 require(visNetwork)
+library(rintrojs)
 
 ###
 # UI
@@ -60,7 +45,8 @@ shinyUI(
         sidebarMenu(
           menuItem("Directive contribution", tabName = "contrib", icon = icon("gavel", lib = "font-awesome"))
           ,
-          menuItem("Conservation strategy", tabName = "conser", icon = icon("kiwi-bird", lib = "font-awesome"))
+          menuItem("Conservation strategy", tabName = "conser", icon = icon("kiwi-bird", lib = "font-awesome")),
+          shiny::textOutput('testo')
         )
       ),
       dashboardBody(
