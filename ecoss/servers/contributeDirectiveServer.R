@@ -1,21 +1,15 @@
-# Query ######
-library('SPARQL')
-library('dplyr')
-fusekiEcoss <- "http://fuseki1.get-it.it/ecoss/query"
-
-queryContrib <- "PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
-                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                 select * WHERE{
-                   ?msfd_param_uri ecoss:contributesToEvaluate ?msfd_criteria_uri;
-                   skos:prefLabel ?msfd_param_name .
-                   ?msfd_criteria_uri skos:prefLabel ?msfd_criteria_name .
-                 }"
-
-contrib <- SPARQL::SPARQL(
-  url = fusekiEcoss, 
-  query = queryContrib
-)$results %>% 
-  as_tibble()
+# site info box #####
+output$siteInfoContrib <- renderUI({
+  div(
+    HTML(
+      paste0(
+        '<h3><b><a href="', siteUrl,'" target="_blank">', siteName, '</a></b></h3><br/>',
+        '<p><b>Site Manager:</b> ', siteManager, '</p><br/>',
+        '<p><b>Site Respondent:</b> ', siteRespondent, '</p>'
+      )
+    )
+  )
+})
 
 # Chart #####
 output$sankeyPlot <- plotly::renderPlotly(
@@ -64,24 +58,31 @@ output$sankeyPlot <- plotly::renderPlotly(
 
 # List of parameters #####
 output$tblContrib <- DT::renderDataTable({
-  datatable(
-    contrib,
-    selection = "none",
-    extensions="Scroller",
-    style="bootstrap",
-    class="compact",
-    escape = FALSE,
-    editable = FALSE,
+  dfContrib <- contrib %>% 
+    dplyr::group_by(
+      msfd_criteria_label1
+    ) %>%
+    summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
+    dplyr::select(
+      `MSFD Criteria` = msfd_criteria_label1,
+      `number of parameter(s) measured that contribute to the MSFD Criteria`
+    ) 
+  actionContrib <- DT::dataTableAjax(session, dfContrib, outputId = "tblContrib")
+  
+  DT::datatable(
+    dfContrib,
     options = list(
+      ajax = list(url = actionContrib),
       pageLength = 30,
       columnDefs = list(list(
         visible = FALSE
       )),
-      #dom = 't',
       ordering = FALSE
-    ),
-    rownames = FALSE
+    ), 
+    escape = FALSE,
+    editable = FALSE
   )
 })
+
 
 

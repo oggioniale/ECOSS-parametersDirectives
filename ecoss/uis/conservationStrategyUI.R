@@ -2,11 +2,11 @@ tabItem(
   tabName = "conser",
   fluidRow(
     boxPlus(
-      width = 6,
-      title = "Site name", 
-      closable = FALSE, 
-      status = "info", 
-      solidHeader = FALSE, 
+      width = 12,
+      title = "Site information",
+      closable = FALSE,
+      status = "info",
+      solidHeader = FALSE,
       collapsible = TRUE,
       enable_sidebar = TRUE,
       sidebar_width = 25,
@@ -17,15 +17,14 @@ tabItem(
       ),
       column(12,
              introBox(
-               # div(HTML("<h4><b>Site Name (EUNIS CODE)</b></h4>")),
-               plotly::plotlyOutput("sankeyPlot1"),
+               htmlOutput("siteInfoStrategy"),
                data.step = 1,
                data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
              )
       )
     ),
     boxPlus(
-      width = 6,
+      width = 12,
       title = "Site name", 
       closable = FALSE, 
       status = "info", 
@@ -40,7 +39,6 @@ tabItem(
       ),
       column(12,
              introBox(
-               # div(HTML("<h4><b>Site Name (EUNIS CODE)</b></h4>")),
                visNetwork::visNetworkOutput("network"),
                data.step = 2,
                data.intro = "In this dropdown menu you can select the SOS where you want to upload the observations and where is stored the station/sensor information."
@@ -49,7 +47,7 @@ tabItem(
     ),
     fluidRow(
       boxPlus(
-        width = 3,
+        width = 6,
         title = "Target species", 
         closable = FALSE, 
         status = "info", 
@@ -62,13 +60,11 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(3#,
-               # div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-               # uiOutput("selectionParamsFixed")
+        column(6, DT::dataTableOutput('tblStrategySpecies')
         )
       ),
       boxPlus(
-        width = 3,
+        width = 6,
         title = "Habitats", 
         closable = FALSE, 
         status = "info", 
@@ -81,14 +77,12 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(3#,
-               # div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-               # uiOutput("selectionParamsFixed")
+        column(6, DT::dataTableOutput('tblStrategyHabitats')
         )
       ),
       boxPlus(
-        width = 3,
-        title = "ECOSS parameters recommended", 
+        width = 6,
+        title = "ECOSS parameters recommended but not measured", 
         closable = FALSE, 
         status = "info", 
         solidHeader = FALSE, 
@@ -100,13 +94,11 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(3#,
-               # div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-               # uiOutput("selectionParamsFixed")
+        column(6, DT::dataTableOutput('tblEcossParamRecom')
         )
       ),
       boxPlus(
-        width = 3,
+        width = 6,
         title = "Parameters measured", 
         closable = FALSE, 
         status = "info", 
@@ -119,9 +111,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(3#,
-               # div(HTML("<h4>Colums headers (modify the saparator or the quote for display the name of the colums)</h4>")),
-               # uiOutput("selectionParamsFixed")
+        column(6, DT::dataTableOutput('tblParamMeasured')
         )
       )
     )

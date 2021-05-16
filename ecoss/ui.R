@@ -23,6 +23,7 @@ library(fs)
 library(shinyalert)
 # remotes::install_github("rstudio/shinyvalidate")
 library(shinyvalidate)
+require(visNetwork)
 
 ###
 # UI
@@ -42,13 +43,13 @@ shinyUI(
         # fixed = FALSE,
         # enable_rightsidebar = TRUE,
         # rightSidebarIcon = "gears",
-        tags$li(class ="dropdown", 
-                tags$a(
-                  href="https://ecoads.eu/",
-                  tags$img(src="https://ecoads.eu/media/images/ECOSS_rgb.max-165x165.jpg"),
-                  style="margin:0;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;",
-                  target="_blank"
-                )
+        tags$li(class ="dropdown"#, 
+                # tags$a(
+                #   href="https://ecoads.eu/",
+                #   tags$img(src="https://ecoads.eu/media/images/ECOSS_rgb.max-165x165.jpg"),
+                #   style="margin:0;padding-top:2px;padding-bottom:2px;padding-left:10px;padding-right:10px;",
+                #   target="_blank"
+                # )
         )#,
         # tags$li(class = "dropdown",
         #         actionButton("help", "Give me an overview", style="margin-right: 10px; margin-top: 8px; color: #fff; background-color: #0069D9; border-color: #0069D9")
