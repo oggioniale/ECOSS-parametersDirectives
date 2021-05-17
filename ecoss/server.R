@@ -50,18 +50,18 @@ shinyServer(function(input, output, session) {
                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     
                    # dato un sito, restituisco elenco di tutti i parametri MSDF che hanno corrispondenza con degli envthes parameters che il sito, su DEIMS, dichiara di osservare. Riporto il numero di tali envthes parameters.
-                   select ?msfd_Parameter (str(?msfd_Parameter_label1) as ?msfd_Parameter_label) ?msfd_criteria (str(sample(?msfd_criteria_label)) as ?msfd_criteria_label1) (count(?envthesparam_label) as ?numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)
+                   select ?msfd_Parameter (str(?msfd_Parameter_label1) as ?msfd_Parameter_label) ?msfd_criteria (str(sample(?msfd_criteria_label)) as ?msfd_criteria_label1) (count(?envthesparam) as ?numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)
                    where {
                      bind(<https://deims.org/",
                deimsId(),
                "> as ?site)
                      ?site ecoss:observes ?envthesparam .
-                     SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
-                       	GRAPH <urn:x-evn-master:EnvThes>{
-                         	?envthesparam skos:prefLabel ?envthesparam_label .
-                       	}
-                       	FILTER(LANG(?envthesparam_label)='en')
-                     	}  
+                     #SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
+                     # 	GRAPH <urn:x-evn-master:EnvThes>{
+                     #   	?envthesparam skos:prefLabel ?envthesparam_label .
+                     #	}
+                     # 	FILTER(LANG(?envthesparam_label)='en')
+                     #	}  
                      ?ecos_var skos:closeMatch|skos:exactMatch ?envthesparam .
                      ?ecos_var a ecoss:ecoss_Variable ;
                        skos:prefLabel ?ecos_var_label .
@@ -229,6 +229,7 @@ shinyServer(function(input, output, session) {
                                 bind(<https://deims.org/",
                                 deimsId(),
                                 "> as ?deims_site_uri) #questa corrispondenza va costruita a mano (ossia: in R) finché non la inseriamo in triple.
+                                bind('TBD' as ?envthesMatch_label) # not useful at the moment
                                 #service <https://semantic.eea.europa.eu/sparql>{      
                                 #  ?site eunissitesSchema:name ?site_name .    
                                 #}
@@ -237,25 +238,37 @@ shinyServer(function(input, output, session) {
                                 ecoss:recommendedForSite ?n2k_site_uri;
                                 skos:prefLabel ?ecos_var_label ;
                                 skos:exactMatch|skos:closeMatch|skos:narrowMatch|skos:relatedMatch|skos:broadMatch ?envthesMatch .
-                                SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
-                                  GRAPH <urn:x-evn-master:EnvThes>{
-                                    ?envthesMatch skos:prefLabel ?envthesMatch_label .
-                                  }
-                                  FILTER(LANG(?envthesMatch_label)='en')
-                                }  
+                                #SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
+                                #  GRAPH <urn:x-evn-master:EnvThes>{
+                                #    ?envthesMatch skos:prefLabel ?envthesMatch_label .
+                                #  }
+                                #  FILTER(LANG(?envthesMatch_label)='en')
+                                #}  
                                 ?deims_site_uri ecoss:observes ?envthesMatch
                               }")
     return(q)
   })
   
-  allVarsMeasured <- reactive({SPARQL::SPARQL(
-    curl_args = list(.encoding="UTF-8"),
-    url = fusekiEcoss, 
-    query = queryConservEcossMeasured()
-  )$results %>% 
-    as_tibble()})
+  allVarsMeasured <- reactive({
+    
+    tbl_structure<-tibble::tribble(
+      ~n2k_site_uri, ~deims_site_uri, ~ecos_var_label,~ecos_var_uri,~envthesMatch,~envthesMatch_label)
+    
+    contents<-
+      SPARQL::SPARQL(
+        curl_args = list(.encoding="UTF-8"),
+        url = fusekiEcoss, 
+        query = queryConservEcossMeasured()
+        )$results %>% 
+      as_tibble()
+    
+    res<-rbind(tbl_structure,contents)
+    
+    })
+    
   
-  allVarsECOSS <- reactive({allVarsRecom() %>%
+  allVarsECOSS <- reactive({
+    allVarsRecom() %>%
     dplyr::left_join(
       allVarsMeasured() %>% 
         dplyr::mutate(isMeasured = TRUE) %>% 
