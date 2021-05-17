@@ -51,7 +51,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(6, DT::dataTableOutput('tblStrategySpecies')
+        column(12, DT::dataTableOutput('tblStrategySpecies')
         )
       ),
       boxPlus(
@@ -69,7 +69,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(6, DT::dataTableOutput('tblStrategyHabitats')
+        column(12, DT::dataTableOutput('tblStrategyHabitats')
         )
       ),
       boxPlus(
@@ -86,7 +86,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(6, DT::dataTableOutput('tblEcossParamRecom')
+        column(12, DT::dataTableOutput('tblEcossParamRecom')
         )
       ),
       boxPlus(
@@ -103,7 +103,7 @@ tabItem(
           tags$p("..."),
           tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
         ),
-        column(6, DT::dataTableOutput('tblParamMeasured')
+        column(12, DT::dataTableOutput('tblParamMeasured')
         )
       )
     )
