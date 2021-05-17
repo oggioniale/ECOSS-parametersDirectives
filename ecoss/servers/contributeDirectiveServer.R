@@ -3,70 +3,101 @@ output$siteInfoContrib <- renderUI({
   div(
     HTML(
       paste0(
-        '<h3><b><a href="', siteUrl,'" target="_blank">', siteName, '</a></b></h3><br/>',
-        '<p><b>Site Manager:</b> ', siteManager, '</p><br/>',
-        '<p><b>Site Respondent:</b> ', siteRespondent, '</p>'
+        '<h3><b><a href="', siteUrl(),'" target="_blank">', siteName(), '</a></b></h3><br/>',
+        '<p><b>Site Manager:</b> ', siteManager(), '</p><br/>',
+        '<p><b>Site Respondent:</b> ', siteRespondent(), '</p>'
       )
     )
   )
 })
 
 # Chart #####
-output$sankeyPlot <- plotly::renderPlotly(
-  fig <- plotly::plot_ly(
-    type = "sankey",
-    orientation = "h",
-    node = list(
-      # label = c("A1", "A2", "B1", "B2", "C1", "C2"),
-      # color = c("blue", "red", "blue", "blue", "blue", "blue"),
-      label = c("Golfo di Venezia", "Water temperature", "Chlorophyll a", "Phytoplankton aboundance", "Transparency", "MSFD - D5C4", "MSFD - D5C2", "MSFD - D7C1", "MSFD - D8C4"),
-      color = c("red", "green", "green", "green", "green", "blue", "blue", "blue", "blue"),
-      # label = c("Golfo di Venezia", "target species", "Habitat", "Declared parameters", "Parameters not measured", "Species 1", "Species 2", "Species 3", "Habitat 1", "Parameter 1", "Parameter 2", "Parameter 3"),
-      # color = c("red", "green", "green", "green", "green", "blue", "blue", "blue", "blue", "blue", "blue", "blue"),
-      pad = 15,
-      thickness = 20,
-      line = list(
-        color = "black",
-        width = 0.5
-      )
+output$visNetworkPlot <- renderVisNetwork({
+  nodes <- tibble::tibble(
+    id = c(
+      siteInfo()$site,
+      unique(contrib()$msfd_Parameter),
+      unique(contrib()$msfd_criteria)
     ),
-    link = list(
-      source = c(0,0,0,2,3,3),
-      target = c(2,3,3,4,4,5),
-      value =  c(8,4,1,8,4,1)
-      # gli elementi totali sono 8 da Golfo di Venezia a MSFD - D8C4. Ogni elemento in source viene codificato da 0 a 8.
-      # in target si indica quale sia l'elemento di arrivo quindi la coppia source targhet indica da dove parte e dove arriva
-      # il collegamento.
-      # value invece indica il valore di ognuno degli elementi quindi l'elemento 0 ha un valore totale di 4+3+3+8 = 18
-      # invece l'elemento 1 (water temperature) ha valore complessivo 2+2 = 4 perchè somma dei valori assegnati alla coppia
-      # 1,5 e la coppia 1,7 
-      # source = c(0,0,0,0,1,1,2,3,4,4),
-      # target = c(1,2,3,4,5,7,8,6,5,7),
-      # value =  c(4,3,3,3,2,2,3,3,2,3)
-      # source = c(0, 0, 0, 0, 1, 1, 1, 2, 3, 3, 4),
-      # target = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
-      # value =  c(3, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1)
+    label = c(
+      siteInfo()$site_name,
+      unique(contrib()$msfd_Parameter_label),
+      unique(sub('>', '', sub('<http://rdfdata.get-it.it/ecoss/msfd_', '', contrib()$msfd_criteria, fixed = TRUE), fixed = TRUE))
+    ),
+    title = c(
+      siteInfo()$site_name,
+      unique(contrib()$msfd_Parameter_label),
+      unique(contrib()$msfd_criteria_label1)
+    ),
+    level = c(
+      1,
+      replicate(length(unique(contrib()$msfd_Parameter_label)), 2),
+      replicate(length(unique(contrib()$msfd_criteria_label1)), 3)
+    ),
+    group = c(
+      'Site',
+      replicate(length(unique(contrib()$msfd_Parameter_label)), 'MSFD parameter measured'),
+      replicate(length(unique(contrib()$msfd_criteria_label1)), 'Contributes to the MSFD Criteria')
     )
-  ) %>% plotly::layout(
-    title = "Sites                                               Parameters                                              Directives",
-    font = list(
-      size = 12
-    ),
-    autosize = T
-  )
-)
+  ) %>%
+    dplyr::filter(id != siteInfo()$site)
+  
+  relation1 <- tibble::tibble(
+    from = replicate(length(unique(contrib()$msfd_Parameter)), siteInfo()$site),
+    to = unique(contrib()$msfd_Parameter),
+    weight = 2
+  ) 
+  
+  relation2 <- contrib() %>% 
+    dplyr::select(
+      from = msfd_Parameter, 
+      to = msfd_criteria,
+      weight = numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD
+    )
+  
+  edges <- rbind(
+    relation1,
+    relation2
+  ) %>%
+    dplyr::filter(from != siteInfo()$site)
+  
+  visNetwork(nodes, edges, height = 700) %>%
+    visNodes(
+      shadow = TRUE
+    ) %>% 
+    visHierarchicalLayout(direction = "UD", levelSeparation = 500) %>% 
+    visEdges(color = list(color = "lightblue")) %>% 
+    visGroups(groupname = "Site", shape = "icon", 
+              icon = list(code = "f041", color = "black")) %>%
+    visGroups(groupname = "MSFD parameter measured", shape = "icon", 
+              icon = list(code = "f05d", color = "green")) %>%
+    visGroups(groupname = "Contributes to the MSFD Criteria", shape = "icon", 
+              icon = list(code = "f055", color = "blue")) %>%
+    addFontAwesome(name = "font-awesome-visNetwork") %>% 
+    visLegend() %>% 
+    visPhysics(solver = "barnesHut") %>% 
+    visExport()
+  # visIgraphLayout() %>%
+  # visOptions(manipulation = TRUE, nodesIdSelection = TRUE,
+  # highlightNearest = list(enabled = T, degree = 2, hover = T))
+})
 
 # List of parameters #####
 output$tblContrib <- DT::renderDataTable({
-  dfContrib <- contrib %>% 
-    dplyr::group_by(
-      msfd_criteria_label1
-    ) %>%
-    summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
-    dplyr::select(
-      `MSFD Criteria` = msfd_criteria_label1,
-      `number of parameter(s) measured that contribute to the MSFD Criteria`
-    ) 
+  dfContrib <- contrib() %>% 
+    # dplyr::group_by(
+    #   msfd_criteria_label1
+    # ) %>%
+    # summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
+    dplyr::mutate(
+      `MSFD Parameters` = paste0('<a href="', sub('>', '', sub('<', '', msfd_Parameter)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', msfd_Parameter_label, '</a>'),
+      `MSFD Criteria` = paste0('<a href="', sub('>', '', sub('<', '', msfd_criteria)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ',
+                               paste0(sub('>', '', sub('<http://rdfdata.get-it.it/ecoss/msfd_', '', msfd_criteria, fixed = TRUE), fixed = TRUE), ' - ', msfd_criteria_label1),
+                               '</a>')#,
+      # `number of parameter(s) measured that contribute to the MSFD Criteria`
+    ) %>% 
+    dplyr::select(`MSFD Parameters`, `MSFD Criteria`) %>% 
+    dplyr::arrange(`MSFD Criteria`)
   actionContrib <- DT::dataTableAjax(session, dfContrib, outputId = "tblContrib")
   
   DT::datatable(

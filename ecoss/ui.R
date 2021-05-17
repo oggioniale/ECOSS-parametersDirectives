@@ -9,6 +9,8 @@ library(shinycssloaders)
 library(shinyalert)
 require(visNetwork)
 library(rintrojs)
+library('SPARQL')
+library('dplyr')
 
 ###
 # UI
@@ -17,6 +19,7 @@ shinyUI(
   fluidPage(
     introjsUI(),
     useShinyalert(),
+    tags$head(tags$style(HTML('#network,#visNetworkPlot{height:700px !important;}'))),
     dashboardPagePlus(
       skin = "blue",
       collapse_sidebar = FALSE,
@@ -45,8 +48,7 @@ shinyUI(
         sidebarMenu(
           menuItem("Directive contribution", tabName = "contrib", icon = icon("gavel", lib = "font-awesome"))
           ,
-          menuItem("Conservation strategy", tabName = "conser", icon = icon("kiwi-bird", lib = "font-awesome")),
-          shiny::textOutput('testo')
+          menuItem("Conservation strategy", tabName = "conser", icon = icon("kiwi-bird", lib = "font-awesome"))
         )
       ),
       dashboardBody(

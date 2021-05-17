@@ -43,6 +43,7 @@ tabItem(
         status = "info", 
         solidHeader = FALSE, 
         collapsible = TRUE,
+        collapsed = TRUE,
         enable_sidebar = TRUE,
         sidebar_width = 25,
         sidebar_start_open = FALSE,
@@ -60,6 +61,7 @@ tabItem(
         status = "info", 
         solidHeader = FALSE, 
         collapsible = TRUE,
+        collapsed = TRUE,
         enable_sidebar = TRUE,
         sidebar_width = 25,
         sidebar_start_open = FALSE,
@@ -72,7 +74,7 @@ tabItem(
       ),
       boxPlus(
         width = 6,
-        title = "ECOSS parameters recommended but not measured", 
+        title = "ECOSS variables (recommended but not measured)", 
         closable = FALSE, 
         status = "info", 
         solidHeader = FALSE, 
@@ -89,7 +91,7 @@ tabItem(
       ),
       boxPlus(
         width = 6,
-        title = "Parameters measured", 
+        title = "ECOSS variables (measured)", 
         closable = FALSE, 
         status = "info", 
         solidHeader = FALSE, 

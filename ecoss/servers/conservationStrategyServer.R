@@ -3,9 +3,9 @@ output$siteInfoStrategy <- renderUI({
   div(
     HTML(
       paste0(
-        '<h3><b><a href="', siteUrl,'" target="_blank">', siteName, '</a></b></h3><br/>',
-        '<p><b>Site Manager:</b> ', siteManager, '</p><br/>',
-        '<p><b>Site Respondent:</b> ', siteRespondent, '</p>'
+        '<h3><b><a href="', siteUrl(),'" target="_blank">', siteName(), '</a></b></h3><br/>',
+        '<p><b>Site Manager:</b> ', siteManager(), '</p><br/>',
+        '<p><b>Site Respondent:</b> ', siteRespondent(), '</p>'
       )
     )
   )
@@ -14,25 +14,39 @@ output$siteInfoStrategy <- renderUI({
 # visNetwork #####
 output$network <- renderVisNetwork({
   nodes <- tibble::tibble(
-    id = 1:17,
+    id = c(
+      siteInfo()$site,
+      specieInfo()$species,
+      allVarsECOSSTrue()$ecos_var_uri,
+      allVarsECOSSNa()$ecos_var_uri
+    ),
     label = c(
-      'Cres - Lošinj', 
-      'Tursiups truncatus',
-      replicate(12, 'Parameter1'),
-      replicate(3, 'Parameter2')
+      siteInfo()$site_name,
+      specieInfo()$species_label,
+      stringr::str_trunc(allVarsECOSSTrue()$ecos_var_label, 10, "right"),
+      stringr::str_trunc(allVarsECOSSNa()$ecos_var_label, 10, "right")
+    ),
+    title = c(
+      siteInfo()$site_name,
+      specieInfo()$species_label,
+      allVarsECOSSTrue()$ecos_var_label,
+      allVarsECOSSNa()$ecos_var_label
     ),
     group = c(
       'Site',
-      'Specie',
-      replicate(12, 'Parameters recommend but not measured'),
-      replicate(3, 'Parameters measured')
+      replicate(nrow(specieInfo()), 'Specie'),
+      replicate(nrow(allVarsECOSSTrue()), 'Measured variables'),
+      replicate(nrow(allVarsECOSSNa()), 'Recommended variables')
     )
   )
   
   edges <- tibble::tibble(
-    from = replicate(16, 1),
-    to = 2:17,
-    weight = replicate(16, 2)
+    from = replicate((nrow(nodes)-1), nodes$id[1]),
+    to = c(
+      specieInfo()$species,
+      allVarsECOSSTrue()$ecos_var_uri,
+      allVarsECOSSNa()$ecos_var_uri),
+    weight = replicate((nrow(nodes)-1), 2)
   )
   
   visNetwork(nodes, edges) %>%
@@ -47,9 +61,9 @@ output$network <- renderVisNetwork({
               icon = list(code = "f041", color = "black")) %>%
     visGroups(groupname = "Specie", shape = "icon", 
               icon = list(code = "f2da", color = "blue")) %>% 
-    visGroups(groupname = "Parameters recommend but not measured", shape = "icon", 
+    visGroups(groupname = "Recommended variables", shape = "icon", 
               icon = list(code = "f10c", color = "red")) %>%
-    visGroups(groupname = "Parameters measured", shape = "icon", 
+    visGroups(groupname = "Measured variables", shape = "icon", 
               icon = list(code = "f05d", color = "green")) %>%
     addFontAwesome(name = "font-awesome-visNetwork") %>% 
     visLegend() %>% 
@@ -64,7 +78,7 @@ output$network <- renderVisNetwork({
 speciesForSite <- c('')
 
 output$tblStrategySpecies <- DT::renderDataTable({
-  dfspecieInfo <- specieInfo %>% 
+  dfspecieInfo <- specieInfo() %>% 
     # dplyr::filter(
     #   species_label %in% speciesForSite
     # ) %>%
@@ -98,7 +112,7 @@ output$tblStrategySpecies <- DT::renderDataTable({
 habitatForSite <- c('')
 
 output$tblStrategyHabitats <- DT::renderDataTable({
-  dfhabitatInfo <- habitatInfo %>% 
+  dfhabitatInfo <- habitatInfo() %>% 
     # dplyr::filter(
     #   habitat_label %in% habitatForSite
     # ) %>%
@@ -129,7 +143,7 @@ output$tblStrategyHabitats <- DT::renderDataTable({
 
 # ECOSS Recommended Variables but not measured tblEcossParamRecom #####
 output$tblEcossParamRecom <- DT::renderDataTable({
-  dfVarsRecom <- allVarsECOSS %>% 
+  dfVarsRecom <- allVarsECOSS() %>% 
     dplyr::filter(
       is.na(isMeasured)
     ) %>%
@@ -159,7 +173,7 @@ output$tblEcossParamRecom <- DT::renderDataTable({
 
 # ECOSS Recommended Variables that are measured tblParamMeasured #####
 output$tblParamMeasured <- DT::renderDataTable({
-  dfVarsMeasured <- allVarsECOSS %>% 
+  dfVarsMeasured <- allVarsECOSS() %>% 
     dplyr::filter(
       isMeasured == TRUE
     ) %>%

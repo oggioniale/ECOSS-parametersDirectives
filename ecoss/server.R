@@ -28,12 +28,13 @@ shinyServer(function(input, output, session) {
       dplyr::filter(siteCodeDEIMS == deimsId()) %>% 
       dplyr::select(siteCodeN2K) %>% 
       dplyr::pull()
+    if (is.null(n2kId)) {
+      n2kId = defaultN2kId
+    }
     return(n2kId)
   })
   
   # for Queries ######
-  library('SPARQL')
-  library('dplyr')
   fusekiEcoss <- "http://fuseki1.get-it.it/ecoss/query"
   
   # to be define!!!! #####
@@ -49,7 +50,7 @@ shinyServer(function(input, output, session) {
                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     
                    # dato un sito, restituisco elenco di tutti i parametri MSDF che hanno corrispondenza con degli envthes parameters che il sito, su DEIMS, dichiara di osservare. Riporto il numero di tali envthes parameters.
-                   select ?msfd_Parameter_label ?msfd_criteria (sample(?msfd_criteria_label) as ?msfd_criteria_label1) (count(?envthesparam_label) as ?numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)
+                   select ?msfd_Parameter (str(?msfd_Parameter_label1) as ?msfd_Parameter_label) ?msfd_criteria (str(sample(?msfd_criteria_label)) as ?msfd_criteria_label1) (count(?envthesparam_label) as ?numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)
                    where {
                      bind(<https://deims.org/",
                deimsId(),
@@ -66,15 +67,16 @@ shinyServer(function(input, output, session) {
                        skos:prefLabel ?ecos_var_label .
                      ?ecos_var skos:closeMatch|skos:exactMatch|skos:relatedMatch ?msfd_Parameter .
                      ?msfd_Parameter a ecoss:msfd_Parameter ;
-                       skos:prefLabel ?msfd_Parameter_label .
+                       skos:prefLabel ?msfd_Parameter_label1 .
                      ?msfd_Parameter ecoss:contributesToEvaluate ?msfd_criteria .
                        ?msfd_criteria skos:prefLabel ?msfd_criteria_label .
                    }
-                   group by ?msfd_Parameter_label ?msfd_criteria")
+                   group by ?msfd_Parameter ?msfd_Parameter_label1 ?msfd_criteria")
     return(q)
     })
   
   contrib <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = queryConserv()
   )$results %>% 
@@ -82,7 +84,7 @@ shinyServer(function(input, output, session) {
   
   
   # query for site info #####
-  querySite <-  reactive({
+  querySite <- reactive({
     q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -108,6 +110,7 @@ shinyServer(function(input, output, session) {
                })
   
   siteInfo <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = querySite()
   )$results %>% 
@@ -139,6 +142,7 @@ shinyServer(function(input, output, session) {
   })
   
   specieInfo <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = querySpecie()
   )$results %>% 
@@ -169,6 +173,7 @@ shinyServer(function(input, output, session) {
   })
   
   habitatInfo <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = queryHabitat()
   )$results %>% 
@@ -200,6 +205,7 @@ shinyServer(function(input, output, session) {
   })
   
   allVarsRecom <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = queryConservEcoss()
   )$results %>% 
@@ -230,7 +236,7 @@ shinyServer(function(input, output, session) {
                                 ?ecos_var_uri a ecoss:ecoss_Variable ;
                                 ecoss:recommendedForSite ?n2k_site_uri;
                                 skos:prefLabel ?ecos_var_label ;
-                                skos:exactMatch|skos:closeMatch ?envthesMatch .
+                                skos:exactMatch|skos:closeMatch|skos:narrowMatch|skos:relatedMatch|skos:broadMatch ?envthesMatch .
                                 SERVICE <http://vocabs.ceh.ac.uk/edg/tbl/sparql>{
                                   GRAPH <urn:x-evn-master:EnvThes>{
                                     ?envthesMatch skos:prefLabel ?envthesMatch_label .
@@ -239,9 +245,11 @@ shinyServer(function(input, output, session) {
                                 }  
                                 ?deims_site_uri ecoss:observes ?envthesMatch
                               }")
+    return(q)
   })
   
   allVarsMeasured <- reactive({SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = queryConservEcossMeasured()
   )$results %>% 
@@ -260,6 +268,15 @@ shinyServer(function(input, output, session) {
   siteManager <- reactive({siteInfo()$site_manager})
   siteRespondent <- reactive({siteInfo()$site_respondent})
   siteUrl <- reactive({sub('>', '', sub('<', '', siteInfo()$site))})
+  
+  allVarsECOSSTrue <- reactive({allVarsECOSS() %>% 
+    dplyr::filter(isMeasured == TRUE) %>% 
+    unique()})
+  
+  allVarsECOSSNa <- reactive({allVarsECOSS() %>% 
+    dplyr::filter(is.na(isMeasured)) %>% 
+    unique()})
+  
   
   # Server fixed station #####
   source("servers/contributeDirectiveServer.R", local = TRUE)$value
