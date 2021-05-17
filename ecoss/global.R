@@ -16,3 +16,82 @@ dt_sites =
 
 defaultDeimsId <- '2e6014fe-8f3b-4127-8ab1-405ae1303281'
 defaultN2kId <- 'HR3000161'
+
+habEcoss <- tibble(
+  site = c('<http://eunis.eea.europa.eu/sites/IT3330009>'),
+  habitat = '<http://eunis.eea.europa.eu/habitats/10009>'
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3250047>'),
+    habitat = '<http://eunis.eea.europa.eu/habitats/10009>'
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3270023>'),
+    habitat = '<http://eunis.eea.europa.eu/habitats/10004>'
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3270017>'),
+    habitat = '<http://eunis.eea.europa.eu/habitats/10004>'
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR4000015>'),
+    habitat = c('<http://eunis.eea.europa.eu/habitats/10004>', '<http://eunis.eea.europa.eu/habitats/10009>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR3000161>'),
+    habitat = ''
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR3000469>'),
+    habitat = ''
+  )
+)
+
+spEcoss <- tibble(
+  site = c('<http://eunis.eea.europa.eu/sites/IT3330009>'),
+  species = c('<http://eunis.eea.europa.eu/species/409>', '<http://eunis.eea.europa.eu/species/1113>', '<http://eunis.eea.europa.eu/species/1198>', '<http://eunis.eea.europa.eu/species/9947>',
+              '<http://eunis.eea.europa.eu/species/641>', '<http://eunis.eea.europa.eu/species/1567>', '<http://eunis.eea.europa.eu/species/291>')
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3250047>'),
+    species = c('<http://eunis.eea.europa.eu/species/409>', '<http://eunis.eea.europa.eu/species/1113>', '<http://eunis.eea.europa.eu/species/1198>', '<http://eunis.eea.europa.eu/species/9947>',
+                '<http://eunis.eea.europa.eu/species/641>', '<http://eunis.eea.europa.eu/species/1567>', '<http://eunis.eea.europa.eu/species/291>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3270023>'),
+    species = c('<http://eunis.eea.europa.eu/species/394>', '<http://eunis.eea.europa.eu/species/569>', '<http://eunis.eea.europa.eu/species/1279>', '<http://eunis.eea.europa.eu/species/1282>', 
+                '<http://eunis.eea.europa.eu/species/1284>', '<http://eunis.eea.europa.eu/species/316012>', '<http://eunis.eea.europa.eu/species/1280>', '<http://eunis.eea.europa.eu/species/1115>', 
+                '<http://eunis.eea.europa.eu/species/1109>', '<http://eunis.eea.europa.eu/species/1113>', '<http://eunis.eea.europa.eu/species/1198>', '<http://eunis.eea.europa.eu/species/409>',
+                '<http://eunis.eea.europa.eu/species/193880>', '<http://eunis.eea.europa.eu/species/193879>', '<http://eunis.eea.europa.eu/species/193847>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/IT3270017>'),
+    species = c('<http://eunis.eea.europa.eu/species/394>', '<http://eunis.eea.europa.eu/species/569>', '<http://eunis.eea.europa.eu/species/1279>', '<http://eunis.eea.europa.eu/species/1282>', 
+                '<http://eunis.eea.europa.eu/species/1284>', '<http://eunis.eea.europa.eu/species/316012>', '<http://eunis.eea.europa.eu/species/1280>', '<http://eunis.eea.europa.eu/species/1115>', 
+                '<http://eunis.eea.europa.eu/species/1109>', '<http://eunis.eea.europa.eu/species/1113>', '<http://eunis.eea.europa.eu/species/1198>', '<http://eunis.eea.europa.eu/species/409>',
+                '<http://eunis.eea.europa.eu/species/193880>', '<http://eunis.eea.europa.eu/species/193879>', '<http://eunis.eea.europa.eu/species/193847>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR4000015>'),
+    species = c('<http://eunis.eea.europa.eu/species/193847>', '<http://eunis.eea.europa.eu/species/193873>', '<http://eunis.eea.europa.eu/species/65549>', '<http://eunis.eea.europa.eu/species/291>',
+                '<http://eunis.eea.europa.eu/species/409>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR3000161>'),
+    species = c('<http://eunis.eea.europa.eu/species/1567>')
+  )
+) %>% rbind(
+  tibble(
+    site = c('<http://eunis.eea.europa.eu/sites/HR3000469>'),
+    species = c('<http://eunis.eea.europa.eu/species/1567>')
+  )
+)

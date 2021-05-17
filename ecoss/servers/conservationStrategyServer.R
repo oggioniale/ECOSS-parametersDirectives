@@ -18,25 +18,29 @@ output$network <- renderVisNetwork({
       siteInfo()$site,
       specieInfo()$species,
       allVarsECOSSTrue()$ecos_var_uri,
-      allVarsECOSSNa()$ecos_var_uri
+      allVarsECOSSNa()$ecos_var_uri,
+      habitatInfo()$habitat
     ),
     label = c(
       siteInfo()$site_name,
       specieInfo()$species_label,
       stringr::str_trunc(allVarsECOSSTrue()$ecos_var_label, 10, "right"),
-      stringr::str_trunc(allVarsECOSSNa()$ecos_var_label, 10, "right")
+      stringr::str_trunc(allVarsECOSSNa()$ecos_var_label, 10, "right"),
+      habitatInfo()$habitat_label
     ),
     title = c(
       siteInfo()$site_name,
       specieInfo()$species_label,
       allVarsECOSSTrue()$ecos_var_label,
-      allVarsECOSSNa()$ecos_var_label
+      allVarsECOSSNa()$ecos_var_label,
+      habitatInfo()$habitat_label
     ),
     group = c(
       'Site',
       replicate(nrow(specieInfo()), 'Specie'),
       replicate(nrow(allVarsECOSSTrue()), 'Measured variables'),
-      replicate(nrow(allVarsECOSSNa()), 'Recommended variables')
+      replicate(nrow(allVarsECOSSNa()), 'Recommended variables'),
+      replicate(nrow(habitatInfo()), 'Habitat')
     )
   )
   
@@ -45,7 +49,9 @@ output$network <- renderVisNetwork({
     to = c(
       specieInfo()$species,
       allVarsECOSSTrue()$ecos_var_uri,
-      allVarsECOSSNa()$ecos_var_uri),
+      allVarsECOSSNa()$ecos_var_uri,
+      habitatInfo()$habitat
+    ),
     weight = replicate((nrow(nodes)-1), 2)
   )
   
@@ -65,6 +71,8 @@ output$network <- renderVisNetwork({
               icon = list(code = "f10c", color = "red")) %>%
     visGroups(groupname = "Measured variables", shape = "icon", 
               icon = list(code = "f05d", color = "green")) %>%
+    visGroups(groupname = "Habitat", shape = "icon", 
+              icon = list(code = "f299", color = "purple")) %>%
     addFontAwesome(name = "font-awesome-visNetwork") %>% 
     visLegend() %>% 
     visPhysics(solver = "barnesHut") %>% 

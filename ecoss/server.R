@@ -146,7 +146,8 @@ shinyServer(function(input, output, session) {
     url = fusekiEcoss, 
     query = querySpecie()
   )$results %>% 
-    as_tibble()})
+    as_tibble() %>% 
+    dplyr::inner_join(spEcoss %>% dplyr::mutate(isEcoss = TRUE))})
   
   # query for habitat info #####
   queryHabitat <- reactive({
@@ -177,7 +178,8 @@ shinyServer(function(input, output, session) {
     url = fusekiEcoss, 
     query = queryHabitat()
   )$results %>% 
-    as_tibble()})
+    as_tibble() %>%
+      dplyr::inner_join(habEcoss %>% dplyr::mutate(isEcoss = TRUE))})
   
   # query for extract ECOSS recommended variables for the site ######
   queryConservEcoss <- reactive({
