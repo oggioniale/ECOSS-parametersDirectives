@@ -11,14 +11,15 @@ require(visNetwork)
 library(rintrojs)
 library('SPARQL')
 library('dplyr')
+# library(shinyjs)
 
 ###
 # UI
 ###
 shinyUI(
   fluidPage(
-    introjsUI(),
     useShinyalert(),
+    # useShinyjs(),
     tags$head(tags$style(HTML('#network,#visNetworkPlot{height:700px !important;}'))),
     dashboardPagePlus(
       skin = "blue",

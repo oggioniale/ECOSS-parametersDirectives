@@ -66,13 +66,13 @@ output$network <- renderVisNetwork({
     visGroups(groupname = "Site", shape = "icon", 
               icon = list(code = "f041", color = "black")) %>%
     visGroups(groupname = "Specie", shape = "icon", 
-              icon = list(code = "f2da", color = "blue")) %>% 
+              icon = list(code = "f2da", color = "#FF9420")) %>% 
     visGroups(groupname = "Recommended variables", shape = "icon", 
-              icon = list(code = "f10c", color = "red")) %>%
+              icon = list(code = "f10c", color = "#53DCE6")) %>%
     visGroups(groupname = "Measured variables", shape = "icon", 
-              icon = list(code = "f05d", color = "green")) %>%
+              icon = list(code = "f05d", color = "#1F6FDE")) %>%
     visGroups(groupname = "Habitat", shape = "icon", 
-              icon = list(code = "f299", color = "purple")) %>%
+              icon = list(code = "f06c", color = "#40C98C")) %>%
     addFontAwesome(name = "font-awesome-visNetwork") %>% 
     visLegend() %>% 
     visPhysics(solver = "barnesHut") %>% 

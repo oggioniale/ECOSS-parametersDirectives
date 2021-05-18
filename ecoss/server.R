@@ -17,7 +17,7 @@ shinyServer(function(input, output, session) {
   deimsId <- reactive({
     queryString <- parseQueryString(session$clientData$url_search)
     siteId <- queryString$siteid
-    if (is.null(siteId)) {
+    if (is.na(siteId)) {
       siteId = defaultDeimsId
     }
     return(siteId)
@@ -25,12 +25,12 @@ shinyServer(function(input, output, session) {
   
   n2kId <- reactive({
     n2kId <- dt_sites %>% 
-      dplyr::filter(siteCodeDEIMS == deimsId()) %>% 
+      dplyr::filter(siteCodeDEIMS == deimsId()) %>%
       dplyr::select(siteCodeN2K) %>% 
       dplyr::pull()
-    if (is.null(n2kId)) {
-      n2kId = defaultN2kId
-    }
+    # if (is.na(n2kId)) {
+    #   n2kId = defaultN2kId
+    # }
     return(n2kId)
   })
   
@@ -85,7 +85,8 @@ shinyServer(function(input, output, session) {
   
   # query for site info #####
   querySite <- reactive({
-    q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
+    if (!is.na(n2kId())) {
+      q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                  PREFIX eunissiteswebpages: <https://eunis.eea.europa.eu/sites/>
@@ -97,8 +98,8 @@ shinyServer(function(input, output, session) {
                  # query per info aggiuntive del sito (sostituire l'uri in 'bind')
                  select distinct ?site ?site_name ?site_manager ?site_respondent where{
                    bind(<http://eunis.eea.europa.eu/sites/",
-               n2kId(),
-               "> as ?site)
+                 n2kId(),
+                 "> as ?site)
                    #?any ecoss:recommendedForSite ?site .
                    service <https://semantic.eea.europa.eu/sparql>{      
                      ?site eunissitesSchema:name ?site_name .
@@ -106,15 +107,25 @@ shinyServer(function(input, output, session) {
                      optional{?site eunissitesSchema:manager ?site_manager .}     
                    }
                  }")
-               return(q)
-               })
+      return(q)
+    } else {
+      q = paste0("select distinct ?site ?site_name ?site_manager ?site_respondent where{
+                  bind(<http://deims.org/",deimsId(),"> as ?site)
+                  bind('",dt_sites %>% filter(siteCodeDEIMS==deimsId()) %>% pull(name),"' as ?site_name)
+                  bind('' as ?site_manager)
+                  bind('' as ?site_respondent)}")
+    }
+    
+  })
   
-  siteInfo <- reactive({SPARQL::SPARQL(
+  siteInfo <- reactive({
+    SPARQL::SPARQL(
     curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = querySite()
   )$results %>% 
-    as_tibble()})
+    as_tibble()
+  })
   
   # query for specie info #####
   querySpecie <- reactive({
@@ -173,13 +184,23 @@ shinyServer(function(input, output, session) {
     return(q)
   })
   
-  habitatInfo <- reactive({SPARQL::SPARQL(
+  habitatInfo <- reactive({
+    tempHabitat <- SPARQL::SPARQL(
     curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
     query = queryHabitat()
   )$results %>% 
-    as_tibble() %>%
-      dplyr::inner_join(habEcoss %>% dplyr::mutate(isEcoss = TRUE))})
+    as_tibble() 
+    
+    if(nrow(tempHabitat) > 0) {
+      return(
+        tempHabitat %>%
+          dplyr::inner_join(habEcoss %>% dplyr::mutate(isEcoss = TRUE))
+      )
+    } else {
+      return(tempHabitat)
+    }
+  })
   
   # query for extract ECOSS recommended variables for the site ######
   queryConservEcoss <- reactive({
