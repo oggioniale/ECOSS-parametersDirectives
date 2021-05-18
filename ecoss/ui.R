@@ -47,9 +47,10 @@ shinyUI(
       dashboardSidebar(
         collapsed = TRUE,
         sidebarMenu(
-          menuItem("Directive contribution", tabName = "contrib", icon = icon("gavel", lib = "font-awesome"))
-          ,
+          id = "maintabmenu",
+          menuItem("Directive contribution", tabName = "contrib", icon = icon("gavel", lib = "font-awesome")),
           menuItem("Conservation strategy", tabName = "conser", icon = icon("kiwi-bird", lib = "font-awesome"))
+          #,textOutput("prova")
         )
       ),
       dashboardBody(

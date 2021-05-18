@@ -30,7 +30,7 @@ tabItem(
       sidebar_start_open = FALSE,
       sidebar_content = tagList(
         tags$p("..."),
-        tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+        tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
       ),
       column(12, visNetwork::visNetworkOutput("network")
       )
@@ -49,7 +49,7 @@ tabItem(
         sidebar_start_open = FALSE,
         sidebar_content = tagList(
           tags$p("..."),
-          tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblStrategySpecies')
         )
@@ -67,7 +67,7 @@ tabItem(
         sidebar_start_open = FALSE,
         sidebar_content = tagList(
           tags$p("..."),
-          tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblStrategyHabitats')
         )
@@ -84,7 +84,7 @@ tabItem(
         sidebar_start_open = FALSE,
         sidebar_content = tagList(
           tags$p("..."),
-          tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblEcossParamRecom')
         )
@@ -101,7 +101,7 @@ tabItem(
         sidebar_start_open = FALSE,
         sidebar_content = tagList(
           tags$p("..."),
-          tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblParamMeasured')
         )

@@ -14,11 +14,27 @@ shinyServer(function(input, output, session) {
     return(id)
   })
   
-  deimsId <- reactive({
+  startTab <- reactive({
+    stab<-"contrib"
     queryString <- parseQueryString(session$clientData$url_search)
-    siteId <- queryString$siteid
-    if (is.na(siteId)) {
-      siteId = defaultDeimsId
+    if(!is.null(queryString$tab) && queryString$tab=="conservation"){
+      stab <- "conser"
+    }
+    return(stab)
+  })
+  
+  #output$prova<-renderText({startTab()})
+  
+  observeEvent(startTab(),{
+    warning("observeEvent(startTab()): ",startTab())
+    updateTabItems(session,"maintabmenu",startTab())
+  })
+  
+  deimsId <- reactive({
+    siteId = defaultDeimsId
+    queryString <- parseQueryString(session$clientData$url_search)
+    if (!is.null(queryString$siteid)) {
+      siteId = siteId <- queryString$siteid
     }
     return(siteId)
   })
@@ -119,6 +135,7 @@ shinyServer(function(input, output, session) {
   })
   
   siteInfo <- reactive({
+    # table structure granted in this case by querySite()
     SPARQL::SPARQL(
     curl_args = list(.encoding="UTF-8"),
     url = fusekiEcoss, 
@@ -152,13 +169,21 @@ shinyServer(function(input, output, session) {
   return(q)
   })
   
-  specieInfo <- reactive({SPARQL::SPARQL(
-    curl_args = list(.encoding="UTF-8"),
-    url = fusekiEcoss, 
-    query = querySpecie()
-  )$results %>% 
-    as_tibble() %>% 
-    dplyr::inner_join(spEcoss %>% dplyr::mutate(isEcoss = TRUE))})
+  specieInfo <- reactive({
+    tbl_structure<-tibble::tribble(~site ,~species ,~species_label ,~species_PESI ,~isEcoss)
+    
+    res <- SPARQL::SPARQL(
+      curl_args = list(.encoding="UTF-8"),
+      url = fusekiEcoss, 
+      query = querySpecie()
+    )$results %>% as_tibble()
+    
+    if(nrow(res)>0)
+      return(res %>% dplyr::inner_join(spEcoss %>% dplyr::mutate(isEcoss = TRUE)))
+    else
+      return(tbl_structure)
+    
+  })
   
   # query for habitat info #####
   queryHabitat <- reactive({
@@ -185,21 +210,20 @@ shinyServer(function(input, output, session) {
   })
   
   habitatInfo <- reactive({
-    tempHabitat <- SPARQL::SPARQL(
-    curl_args = list(.encoding="UTF-8"),
-    url = fusekiEcoss, 
-    query = queryHabitat()
-  )$results %>% 
-    as_tibble() 
+    tbl_structure <-
+      tibble::tribble( ~ site, ~ habitat, ~ habitat_label, ~ habitat_description)
     
-    if(nrow(tempHabitat) > 0) {
-      return(
-        tempHabitat %>%
-          dplyr::inner_join(habEcoss %>% dplyr::mutate(isEcoss = TRUE))
-      )
-    } else {
-      return(tempHabitat)
-    }
+    res <- SPARQL::SPARQL(
+      curl_args = list(.encoding = "UTF-8"),
+      url = fusekiEcoss,
+      query = queryHabitat()
+    )$results %>%
+      as_tibble()
+    
+    if (nrow(res) > 0)
+      return(res %>% dplyr::inner_join(habEcoss %>% dplyr::mutate(isEcoss = TRUE)))
+    else
+      return(tbl_structure)
   })
   
   # query for extract ECOSS recommended variables for the site ######
@@ -227,12 +251,21 @@ shinyServer(function(input, output, session) {
     return(q)
   })
   
-  allVarsRecom <- reactive({SPARQL::SPARQL(
-    curl_args = list(.encoding="UTF-8"),
-    url = fusekiEcoss, 
-    query = queryConservEcoss()
-  )$results %>% 
-    as_tibble()})
+  allVarsRecom <- reactive({
+    tbl_structure<-tibble::tribble(~n2k_site_uri, ~ecos_var_label, ~ecos_var_uri)
+    
+    res <- SPARQL::SPARQL(
+      curl_args = list(.encoding = "UTF-8"),
+      url = fusekiEcoss,
+      query = queryConservEcoss()
+    )$results %>%
+      as_tibble()
+    
+    if (nrow(res) > 0)
+      return(res)
+    else
+      return(tbl_structure)
+  })
   
   # query for extract ECOSS recommended variables measured in the site #####
   queryConservEcossMeasured <- reactive({
