@@ -1,3 +1,14 @@
+library(dplyr)
+library(shiny)
+library(shinydashboard)
+library(shinydashboardPlus)
+library(DT)
+library(shinycssloaders)
+library(shinyalert)
+require(visNetwork)
+library(rintrojs)
+library(SPARQL)
+
 dt_sites = 
   tibble::tribble(
     ~name, ~siteCodeN2K, ~siteCodeDEIMS, ~eLTERNetwork, ~N2KNetwork,
