@@ -37,7 +37,7 @@ output$network <- renderVisNetwork({
     ),
     group = c(
       'Site',
-      replicate(nrow(specieInfo()), 'Specie'),
+      replicate(nrow(specieInfo()), 'Species'),
       replicate(nrow(allVarsECOSSTrue()), 'Measured variables'),
       replicate(nrow(allVarsECOSSNa()), 'Recommended variables'),
       replicate(nrow(habitatInfo()), 'Habitat')
@@ -65,7 +65,7 @@ output$network <- renderVisNetwork({
     visEdges(color = list(color = "lightblue")) %>% 
     visGroups(groupname = "Site", shape = "icon", 
               icon = list(code = "f041", color = "black")) %>%
-    visGroups(groupname = "Specie", shape = "icon", 
+    visGroups(groupname = "Species", shape = "icon", 
               icon = list(code = "f2da", color = "#FF9420")) %>% 
     visGroups(groupname = "Recommended variables", shape = "icon", 
               icon = list(code = "f10c", color = "#53DCE6")) %>%
