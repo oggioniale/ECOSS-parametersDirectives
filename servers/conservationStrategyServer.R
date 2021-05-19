@@ -37,7 +37,7 @@ output$network <- renderVisNetwork({
     ),
     group = c(
       'Site',
-      replicate(nrow(specieInfo()), 'Specie'),
+      replicate(nrow(specieInfo()), 'Species'),
       replicate(nrow(allVarsECOSSTrue()), 'Measured variables'),
       replicate(nrow(allVarsECOSSNa()), 'Recommended variables'),
       replicate(nrow(habitatInfo()), 'Habitat')
