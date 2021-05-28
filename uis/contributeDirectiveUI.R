@@ -18,7 +18,7 @@ tabItem(
           tags$a("Cres - Lošinj", href="https://eunis.eea.europa.eu/sites/HR3000161", target="_blank"),
           '). For eLTER sites, ate the moment, only the title is visible. In both cases other information can be reached following the link, by cliking on the site name.'
         ),
-        tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+        tags$p(tags$b("Press the i for collaps this slidebar and start with the work."))
       ),
       column(12, htmlOutput("siteInfoContrib")
       )
@@ -39,7 +39,7 @@ tabItem(
           match with those deemed necessary to contribute to the MSFD criteria. The dark blue are all the MSFD criteria to which the parameters can contribute. 
           The lines are meant to represent the connection between the parameters and the criteria.'
         ),
-        tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+        tags$p(tags$b("Press the i for collaps this slidebar and start with the work."))
       ),
       column(12, visNetwork::visNetworkOutput("visNetworkPlot")
       )
@@ -60,7 +60,7 @@ tabItem(
             'The table reproduces the graph above. The parameters monitored and the MSFD criteria. 
             A link to the ECOSS thesaurus for parameters and MSFD criteria has provided.'
           ),
-          tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+          tags$p(tags$b("Press the i for collaps this slidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblContrib')
         )
