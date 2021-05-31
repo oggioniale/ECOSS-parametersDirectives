@@ -74,17 +74,24 @@ vembedr::embed_youtube(
 
 ## :chart_with_downwards_trend: Data exploited by the *ECOSS Tools*
 
+*ECOSS Tools* let the visualization of 
 ### List of exploited Thesauri, RDF schemas, and ontologies with corresponding URIs.
 
 * ECOSS task ontology (with instances): <http://rdfdata.get-it.it/ecoss/>
+It is an rdf schema for several entities depicted in the tools. The schema provides classes for e.g. ECOSS monitoring variables (Ecologic, Oceanographic and Pressure variables identified by the ECOSS project with the aim to establish a reference for the monitoring tasks of the project sites); Marine Strategy Framework Directive (MSFD) parameters (these are atomic observable properties that ECOSS project extracted from MSFD documentation); EnvThes Parameters declared by the project sites within LTER Europe DEIMS platform; etc.  The ECOSS task ontology models several relations among its entities so that it is possible to make semantic queries in order to investigate, for each site, its contribution to the MSFD directive given its actual monitoring status (represented by its current metadata provided by site managers in DEIMS).
 * EnvThes thesaurus: <http://vocabs.lter-europe.net/EnvThes/>
+Thesaurus for long term ecological research, monitoring, experiments. It is  the controlled vocabulary of the LTER-Europe community. It is based on Simple Knowloedge Organization System (SKOS) ontology. EnvThes is exploited by LTER Europe infrastructure, and in particular by DEIMS-SDR site metadata catalogue, as the basis for semantic interoperability. It is coordinated by Umweltbundesamt GmbH, Austria.
 * EEA Eunis Habitat Types schema: <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>
+European Environment Agency RDF schema for information about the EUNIS habitat classification and the EU Habitats Directive Annex I habitat types 
 * EEA Eunis Sites schema: <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
 * EEA Eunis Sites (instances): <https://eunis.eea.europa.eu/sites>
+European Environment Agency information encoded in RDF (schema and instances) about protected and other designated sites relevant for fauna, flora and habitat protection in Europe
 * EEA Eunis Species schema: <http://eunis.eea.europa.eu/rdf/species-schema.rdf#>
 * EEA Eunis Species (instances): <http://eunis.eea.europa.eu/species/> 
+European Environmental Agencies information about species in Europe, particularly species mentioned in legal texts.
 
 ### List of SPARQL endpoints.
+Third-party SPARQL Endpoints. These are the services to which the *ECOSS Tools" direct its semantic queries in real-time when you are using the Apps.
 * European Environmental Agency SPARQL endpoint <https://semantic.eea.europa.eu/sparql>
 * CEH semantic web editor SPARQL endpoint (it provides access to the EnvThes thesaurus): <http://vocabs.ceh.ac.uk/edg/tbl/sparql>
 
@@ -93,7 +100,7 @@ vembedr::embed_youtube(
 
 Alessandro Oggioni <http://www.cnr.it/people/alessandro.oggioni>
 
-Paolo Tagliolato <...>
+Paolo Tagliolato <https://orcid.org/0000-0002-0261-313X>
 
 
 ## :office: Contributing organizations
