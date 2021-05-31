@@ -17,14 +17,14 @@ of the [Interreg Italy-Croatia project
 ECOSS](https://www.italy-croatia.eu/) WP5 - Design and implementation of
 data infrastructure.
 
-*ECOSS Tools* general aims is to provide an interactive application to
-respond to the need of the sites involved in the [ECOlogical observing
-system in the Adriatic Sea (ECOAdS)](https://ecoads.eu) in term of
-conservation strategies and contribution to the main EU directives. The
-ECOSS Tools are designed to exploit the information collected in the
-ECOSS project integrating them with those already existing on the web,
-resulting in a graphical representation of the monitoring activities at
-the sites.
+*ECOSS Tools* aims at providing interactive applications to respond to
+the needs of the sites involved in the [ECOlogical observing system in
+the Adriatic Sea (ECOAdS)](https://ecoads.eu) for what concerns
+conservation strategies and the contribution to the main EU directives.
+The ECOSS Tools provide graphical representations of monitoring
+activities at the sites, leveraging the information collected by the
+ECOSS project by means of their integration with other information
+sources already available in internet.
 
 ECOAdS includes two types of sites: Long Term Ecological Research (LTER)
 and Natura 2000 (N2K) sites, belonging to the [LTER
@@ -34,11 +34,11 @@ respectively.
 
 *ECOSS Tools* allow to:
 
-1.  Evaluate the sites, both LTER and N2K, contribution to the Marine
-    Strategy Framework Directive (MSFD) monitoring activities
-    (**Directive contribution**);
+1.  Evaluate the LTER-and-N2K sites’ contribution to the Marine Strategy
+    Framework Directive (MSFD) monitoring activities (**Directive
+    contribution**);
 
-2.  Evaluate the N2K sites contribution to the conservation of the
+2.  Evaluate the N2K sites’ contribution to the conservation of the
     specific target species and habitats included in the site
     (**Conservation strategy**).
 
@@ -48,23 +48,24 @@ Lošinj
 page](https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/))
 trough the “Tools” section.
 
-By clicking on **site contribution** the tool dedicated to assessing the
-contribution of the site, in terms of measured parameters, to the MSFD
-criteria elements will open. Otherwise selecting the **conservation
-strategy**, the tool will show the contribution of the N2K site to the
-conservation of target species and habitats.
+The **site contribution** tab contains the tool for the assessment of
+the site contribution of the site to MSFD. Within this tool it is
+possible to visualize the measured parameters and their relation with
+MSFD criteria elements. The **conservation strategy** tab contains the
+tool showing the contribution of the N2K site to the conservation of
+target species and habitats.
 
-The site contribution is evaluated basing on the number of observed
-parameters, corresponding to the parameters suitable for assessing a
-MSFD criteria. The conservation strategy contribution is evaluated by
-comparing the number of ecological, oceanographic, and pressure
-variables measured at the site with the variables indicated by ECOSS as
-fundamental for assessing the state of conservation of the specific
-target species/habitat.
+The site contribution is evaluated by the number of observed parameters,
+corresponding to the parameters suitable for assessing a MSFD criteria.
+The conservation strategy contribution is evaluated by comparing the
+number of ecological, oceanographic, and pressure variables measured at
+the site with the variables indicated by ECOSS as fundamental for
+assessing the state of conservation of the specific target
+species/habitat.
 
-During the ECOOS project, a great effort was devoted both to identify
-the parameters to be monitored in order to accomplish the MSFD criteria
-needs and to recognize the variable that better contribute to the
+During the ECOSS project, great effort was devoted both to identify the
+parameters to be monitored in order to accomplish the MSFD criteria
+needs and to recognize the variables that better contribute to
 conservation strategies. The results of this work are delivered in the
 following documents and publications:
 
@@ -86,9 +87,28 @@ To cite *ECOSS Tools* please use:
 </div>
 </div>
 
-## :chart\_with\_downwards\_trend: Data below *ECOSS Tools*
+## :chart\_with\_downwards\_trend: Data exploited by the *ECOSS Tools*
 
-(Description of Thesaurus, some part included and ontology)
+### List of exploited Thesauri, RDF schemas, and ontologies with corresponding URIs.
+
+  - ECOSS task ontology (with instances):
+    <http://rdfdata.get-it.it/ecoss/>
+  - EnvThes thesaurus: <http://vocabs.lter-europe.net/EnvThes/>
+  - EEA Eunis Habitat Types schema:
+    <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>
+  - EEA Eunis Sites schema:
+    <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
+  - EEA Eunis Sites (instances): <https://eunis.eea.europa.eu/sites>
+  - EEA Eunis Species schema:
+    <http://eunis.eea.europa.eu/rdf/species-schema.rdf#>
+  - EEA Eunis Species (instances): <http://eunis.eea.europa.eu/species/>
+
+### List of SPARQL endpoints.
+
+  - European Environmental Agency SPARQL endpoint
+    <https://semantic.eea.europa.eu/sparql>
+  - CEH semantic web editor SPARQL endpoint (it provides access to the
+    EnvThes thesaurus): <http://vocabs.ceh.ac.uk/edg/tbl/sparql>
 
 ## :writing\_hand: Authors
 

@@ -18,7 +18,7 @@ tabItem(
             tags$a("Cres - Lošinj", href="https://eunis.eea.europa.eu/sites/HR3000161", target="_blank"),
             '). For eLTER sites, ate the moment, only the title is visible. In both cases other information can be reached following the link, by cliking on the site name.'
         ),
-        tags$p(tags$b("Press the gear for collaps this slidebar and start with the work."))
+        tags$p(tags$b("Press the i for collaps this slidebar and start with the work."))
       ),
       column(12, htmlOutput("siteInfoStrategy")
       )
@@ -40,7 +40,7 @@ tabItem(
           Finally also the protected habitats is/are show.' 
         ),
         tags$p('Both, target species and habitat list, on demand from European Environmental Agency (EEA) Linked Data repository are collected.'),
-        tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
+        tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
       ),
       column(12, visNetwork::visNetworkOutput("network")
       )
@@ -64,7 +64,7 @@ tabItem(
             tags$a("Life Science Identifiers", href="http://www.lsid.info/", target="_blank"),
             ') represented as a Uniform Resource Name (URN) for all species has provided.'
           ),
-          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
+          tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblStrategySpecies')
         )
@@ -85,7 +85,7 @@ tabItem(
             'In this table the protected habitats is/are listed as returned by the European Environmental Agency (EEA) Linked Data repository.
             A link to the EEA for all habitats has provided.'
           ),
-          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
+          tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblStrategyHabitats')
         )
@@ -106,7 +106,7 @@ tabItem(
             conservation of the specific target species/habitat are listed here.
             A link to the ECOSS thesaurus for all variables has provided.'
           ),
-          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
+          tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblEcossParamRecom')
         )
@@ -127,7 +127,7 @@ tabItem(
             conservation of the specific target species/habitat are listed here.
             '
           ),
-          tags$p(tags$b("Press the gear to collapse this sidebar and start with the work."))
+          tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
         column(12, DT::dataTableOutput('tblParamMeasured')
         )
