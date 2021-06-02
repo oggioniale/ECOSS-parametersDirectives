@@ -69,7 +69,8 @@ needs and to recognize the variables that better contribute to
 conservation strategies. The results of this work are delivered in the
 following documents and publications:
 
-…
+  - Gianni et al. (2020)
+  - Manea et al. (2020)
 
 <!-- about the icons https://github.com/ikatyang/emoji-cheat-sheet -->
 
@@ -89,21 +90,55 @@ To cite *ECOSS Tools* please use:
 
 ## :chart\_with\_downwards\_trend: Data exploited by the *ECOSS Tools*
 
+*ECOSS Tools* let the visualization of
+
 ### List of exploited Thesauri, RDF schemas, and ontologies with corresponding URIs.
 
   - ECOSS task ontology (with instances):
-    <http://rdfdata.get-it.it/ecoss/>
+    <http://rdfdata.get-it.it/ecoss/> It is an rdf schema for several
+    entities depicted in the tools. The schema provides classes for
+    e.g. ECOSS monitoring variables (Ecologic, Oceanographic and
+    Pressure variables identified by the ECOSS project with the aim to
+    establish a reference for the monitoring tasks of the project
+    sites); Marine Strategy Framework Directive (MSFD) parameters (these
+    are atomic observable properties that ECOSS project extracted from
+    MSFD documentation); EnvThes Parameters declared by the project
+    sites within LTER Europe DEIMS platform; etc. The ECOSS task
+    ontology models several relations among its entities so that it is
+    possible to make semantic queries in order to investigate, for each
+    site, its contribution to the MSFD directive given its actual
+    monitoring status (represented by its current metadata provided by
+    site managers in DEIMS).
   - EnvThes thesaurus: <http://vocabs.lter-europe.net/EnvThes/>
+    Thesaurus for long term ecological research, monitoring,
+    experiments. It is the controlled vocabulary of the LTER-Europe
+    community. It is based on Simple Knowloedge Organization System
+    (SKOS) ontology. EnvThes is exploited by LTER Europe infrastructure,
+    and in particular by DEIMS-SDR site metadata catalogue, as the basis
+    for semantic interoperability. It is coordinated by Umweltbundesamt
+    GmbH, Austria.
   - EEA Eunis Habitat Types schema:
-    <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#>
+    <http://eunis.eea.europa.eu/rdf/habitats-schema.rdf#> European
+    Environment Agency RDF schema for information about the EUNIS
+    habitat classification and the EU Habitats Directive Annex I habitat
+    types
   - EEA Eunis Sites schema:
     <http://eunis.eea.europa.eu/rdf/sites-schema.rdf#>
   - EEA Eunis Sites (instances): <https://eunis.eea.europa.eu/sites>
+    European Environment Agency information encoded in RDF (schema and
+    instances) about protected and other designated sites relevant for
+    fauna, flora and habitat protection in Europe
   - EEA Eunis Species schema:
     <http://eunis.eea.europa.eu/rdf/species-schema.rdf#>
   - EEA Eunis Species (instances): <http://eunis.eea.europa.eu/species/>
+    European Environmental Agencies information about species in Europe,
+    particularly species mentioned in legal texts.
 
 ### List of SPARQL endpoints.
+
+Third-party SPARQL Endpoints. These are the services to which the *ECOSS
+Tools* direct its semantic queries in real-time when you are using the
+Apps
 
   - European Environmental Agency SPARQL endpoint
     <https://semantic.eea.europa.eu/sparql>
@@ -114,8 +149,35 @@ To cite *ECOSS Tools* please use:
 
 Alessandro Oggioni <http://www.cnr.it/people/alessandro.oggioni>
 
-Paolo Tagliolato \<…\>
+Paolo Tagliolato <https://orcid.org/0000-0002-0261-313X>
 
 ## :office: Contributing organizations
 
-<a href="http://www.irea.cnr.it/en/"><img src="figures/irea_logo.png" height="40" align="left" /></a>
+<a href="http://www.irea.cnr.it/en/"><img src="figures/irea_logo.png" height="40" align="left" /></a><br/>
+<br/>
+
+## :books: References
+
+<div id="refs" class="references hanging-indent">
+
+<div id="ref-Gianni2020">
+
+Gianni, Fabrizio, V. Bandelj, Bruno Cataletto, Elisabetta Manea,
+Caterina Bergami, Lucia Bongiorni, Alessandro Oggioni, et al. 2020.
+“ECOSS - D3.3.1 Report on the Key Oceanographic Processes and
+Performance Indicators for Natura 2000 Marine Sites.” D3.3.1.
+<https://www.italy-croatia.eu/documents/289585/0/D3.3.1+Report+on+the+key+oceanographic+processes+and+performance+indicators+for+Natura+2000+marine+sites.pdf/15526fcf-4de2-e6d6-7a9c-f56ca2155cfa?t=1608182937105>.
+
+</div>
+
+<div id="ref-Manea2020">
+
+Manea, Elisabetta, Lucia Bongiorni, Caterina Bergami, and Alessandra
+Pugnetti. 2020. “Challenges for Marine Ecological Observatories to
+Promote Effective Gms of Natura 2000 Network the Case Study of Ecoads in
+the Adriatic Sea.” In, pp. 23–39.
+<https://doi.org/10.26383/978-88-8080-402-4>.
+
+</div>
+
+</div>
