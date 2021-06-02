@@ -164,8 +164,9 @@ Paolo Tagliolato <https://orcid.org/0000-0002-0261-313X>
 
 Gianni, Fabrizio, V. Bandelj, Bruno Cataletto, Elisabetta Manea,
 Caterina Bergami, Lucia Bongiorni, Alessandro Oggioni, et al. 2020.
-“ECOSS - D3.3.1 Report on the Key Oceanographic Processes and
-Performance Indicators for Natura 2000 Marine Sites.” D3.3.1.
+“D3.3.1 Report on the Key Oceanographic Processes and Performance
+Indicators for Natura 2000 Marine Sites.” ECOSS Project Deleverable
+D3.3.1.
 <https://www.italy-croatia.eu/documents/289585/0/D3.3.1+Report+on+the+key+oceanographic+processes+and+performance+indicators+for+Natura+2000+marine+sites.pdf/15526fcf-4de2-e6d6-7a9c-f56ca2155cfa?t=1608182937105>.
 
 </div>
