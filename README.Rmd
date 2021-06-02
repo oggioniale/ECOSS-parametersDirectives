@@ -62,16 +62,17 @@ To cite *ECOSS Tools* please use:
 ## :movie_camera: Video tutorial
 
 ```{r}
-vembedr::embed_youtube(
-  '',
-  width = NULL,
-  height = 300,
-  ratio = c("16by9", "4by3"),
-  frameborder = 0,
-  allowfullscreen = TRUE,
-  query = NULL
-)
+# vembedr::embed_youtube(
+#   '',
+#   width = NULL,
+#   height = 300,
+#   ratio = c("16by9", "4by3"),
+#   frameborder = 0,
+#   allowfullscreen = TRUE,
+#   query = NULL
+# )
 ```
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/zW4GAl-_C9I/0.jpg)](https://www.youtube.com/watch?v=zW4GAl-_C9I)
 
 
 ## :chart_with_downwards_trend: Data exploited by the *ECOSS Tools*

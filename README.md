@@ -82,11 +82,8 @@ To cite *ECOSS Tools* please use:
 
 ## :movie\_camera: Video tutorial
 
-<div class="vembedr">
-<div>
-<iframe src="https://www.youtube.com/embed/" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
-</div>
-</div>
+[![IMAGE ALT TEXT
+HERE](https://img.youtube.com/vi/zW4GAl-_C9I/0.jpg)](https://www.youtube.com/watch?v=zW4GAl-_C9I)
 
 ## :chart\_with\_downwards\_trend: Data exploited by the *ECOSS Tools*
 
@@ -176,7 +173,8 @@ D3.3.1.
 Manea, Elisabetta, Lucia Bongiorni, Caterina Bergami, and Alessandra
 Pugnetti. 2020. “Challenges for Marine Ecological Observatories to
 Promote Effective Gms of Natura 2000 Network the Case Study of Ecoads in
-the Adriatic Sea.” In, pp. 23–39.
+the Adriatic Sea.” In *Governing Future Challenges in Mediterranean
+Protected Areas*, pp. 23–39. CNR Edizioni 2020.
 <https://doi.org/10.26383/978-88-8080-402-4>.
 
 </div>
