@@ -6,7 +6,7 @@ date: June 8, 2021
 output:
   revealjs::revealjs_presentation:
     transition: fade
-    css: monokai.css
+    # css: monokai.css
     center: true
     mathjax: NULL
     theme: white
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # 1st use case
 
-The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe) to the Marine Strategy Framework Directive (MSFD).
+The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
 
 ## {data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"}
 ```{r, echo=FALSE}
