@@ -119,16 +119,7 @@ The [GitHub](https://github.com/oggioniale/ECOSS-parametersDirectives) repositor
 
 To cite *ECOSS Tools* please use:
 ``` bibtex
-@software{alessandro_oggioni_2021_4638828,
-  author       = {Alessandro Oggioni and
-                  Caterina Bergami},
-  title        = {{oggioniale/TeaCompositionCatalogue: First release 
-                   of tea composition catalogue}},
-  month        = mar,
-  year         = 2021,
-  publisher    = {Zenodo},
-  version      = {v1.0},
-  doi          = {10.5281/zenodo.4638828},
-  url          = {https://doi.org/10.5281/zenodo.4638828}
+@software{
+ ...
 }
 ```
