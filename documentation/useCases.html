@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="CNR-IREA" />
+  <meta name="dcterms.date" content="2021-06-08" />
+  <title>ECOAdS Geoportal - Tools</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="useCases_files/reveal.js-3.3.0.1/css/reveal.css"/>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="useCases_files/reveal.js-3.3.0.1/css/theme/white.css" id="theme">
+
+
+  <!-- some tweaks to reveal css -->
+  <style type="text/css">
+    .reveal h1 { font-size: 2.0em; }
+    .reveal h2 { font-size: 1.5em;  }
+    .reveal h3 { font-size: 1.25em;	}
+    .reveal h4 { font-size: 1em;	}
+
+    .reveal .slides>section,
+    .reveal .slides>section>section {
+      padding: 0px 0px;
+    }
+
+
+
+    .reveal table {
+      border-width: 1px;
+      border-spacing: 2px;
+      border-style: dotted;
+      border-color: gray;
+      border-collapse: collapse;
+      font-size: 0.7em;
+    }
+
+    .reveal table th {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      font-weight: bold;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+    .reveal table td {
+      border-width: 1px;
+      padding-left: 10px;
+      padding-right: 25px;
+      border-style: dotted;
+      border-color: gray;
+    }
+
+
+  </style>
+
+    <style type="text/css">code{white-space: pre;}</style>
+
+    <link rel="stylesheet" href="monokai.css"/>
+
+<!-- Printing and PDF exports -->
+<script id="paper-css" type="application/dynamic-css">
+
+/* Default Print Stylesheet Template
+   by Rob Glazebrook of CSSnewbie.com
+   Last Updated: June 4, 2008
+
+   Feel free (nay, compelled) to edit, append, and
+   manipulate this file as you see fit. */
+
+
+@media print {
+
+	/* SECTION 1: Set default width, margin, float, and
+	   background. This prevents elements from extending
+	   beyond the edge of the printed page, and prevents
+	   unnecessary background images from printing */
+	html {
+		background: #fff;
+		width: auto;
+		height: auto;
+		overflow: visible;
+	}
+	body {
+		background: #fff;
+		font-size: 20pt;
+		width: auto;
+		height: auto;
+		border: 0;
+		margin: 0 5%;
+		padding: 0;
+		overflow: visible;
+		float: none !important;
+	}
+
+	/* SECTION 2: Remove any elements not needed in print.
+	   This would include navigation, ads, sidebars, etc. */
+	.nestedarrow,
+	.controls,
+	.fork-reveal,
+	.share-reveal,
+	.state-background,
+	.reveal .progress,
+	.reveal .backgrounds {
+		display: none !important;
+	}
+
+	/* SECTION 3: Set body font face, size, and color.
+	   Consider using a serif font for readability. */
+	body, p, td, li, div {
+		font-size: 20pt!important;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		color: #000;
+	}
+
+	/* SECTION 4: Set heading font face, sizes, and color.
+	   Differentiate your headings from your body text.
+	   Perhaps use a large sans-serif for distinction. */
+	h1,h2,h3,h4,h5,h6 {
+		color: #000!important;
+		height: auto;
+		line-height: normal;
+		font-family: Georgia, "Times New Roman", Times, serif !important;
+		text-shadow: 0 0 0 #000 !important;
+		text-align: left;
+		letter-spacing: normal;
+	}
+	/* Need to reduce the size of the fonts for printing */
+	h1 { font-size: 28pt !important;  }
+	h2 { font-size: 24pt !important; }
+	h3 { font-size: 22pt !important; }
+	h4 { font-size: 22pt !important; font-variant: small-caps; }
+	h5 { font-size: 21pt !important; }
+	h6 { font-size: 20pt !important; font-style: italic; }
+
+	/* SECTION 5: Make hyperlinks more usable.
+	   Ensure links are underlined, and consider appending
+	   the URL to the end of the link for usability. */
+	a:link,
+	a:visited {
+		color: #000 !important;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	/*
+	.reveal a:link:after,
+	.reveal a:visited:after {
+		content: " (" attr(href) ") ";
+		color: #222 !important;
+		font-size: 90%;
+	}
+	*/
+
+
+	/* SECTION 6: more reveal.js specific additions by @skypanther */
+	ul, ol, div, p {
+		visibility: visible;
+		position: static;
+		width: auto;
+		height: auto;
+		display: block;
+		overflow: visible;
+		margin: 0;
+		text-align: left !important;
+	}
+	.reveal pre,
+	.reveal table {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.reveal pre code {
+		padding: 20px;
+		border: 1px solid #ddd;
+	}
+	.reveal blockquote {
+		margin: 20px 0;
+	}
+	.reveal .slides {
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 0 !important;
+		zoom: 1 !important;
+
+		overflow: visible !important;
+		display: block !important;
+
+		text-align: left !important;
+		-webkit-perspective: none;
+		   -moz-perspective: none;
+		    -ms-perspective: none;
+		        perspective: none;
+
+		-webkit-perspective-origin: 50% 50%;
+		   -moz-perspective-origin: 50% 50%;
+		    -ms-perspective-origin: 50% 50%;
+		        perspective-origin: 50% 50%;
+	}
+	.reveal .slides section {
+		visibility: visible !important;
+		position: static !important;
+		width: auto !important;
+		height: auto !important;
+		display: block !important;
+		overflow: visible !important;
+
+		left: 0 !important;
+		top: 0 !important;
+		margin-left: 0 !important;
+		margin-top: 0 !important;
+		padding: 60px 20px !important;
+		z-index: auto !important;
+
+		opacity: 1 !important;
+
+		page-break-after: always !important;
+
+		-webkit-transform-style: flat !important;
+		   -moz-transform-style: flat !important;
+		    -ms-transform-style: flat !important;
+		        transform-style: flat !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+
+		-webkit-transition: none !important;
+		   -moz-transition: none !important;
+		    -ms-transition: none !important;
+		        transition: none !important;
+	}
+	.reveal .slides section.stack {
+		padding: 0 !important;
+	}
+	.reveal section:last-of-type {
+		page-break-after: avoid !important;
+	}
+	.reveal section .fragment {
+		opacity: 1 !important;
+		visibility: visible !important;
+
+		-webkit-transform: none !important;
+		   -moz-transform: none !important;
+		    -ms-transform: none !important;
+		        transform: none !important;
+	}
+	.reveal section img {
+		display: block;
+		margin: 15px 0px;
+		background: rgba(255,255,255,1);
+		border: 1px solid #666;
+		box-shadow: none;
+	}
+
+	.reveal section small {
+		font-size: 0.8em;
+	}
+
+}  
+</script>
+
+
+<script id="pdf-css" type="application/dynamic-css">
+    
+/**
+ * This stylesheet is used to print reveal.js
+ * presentations to PDF.
+ *
+ * https://github.com/hakimel/reveal.js#pdf-export
+ */
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+
+body {
+	margin: 0 auto !important;
+	border: 0;
+	padding: 0;
+	float: none !important;
+	overflow: visible;
+}
+
+html {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+/* Remove any elements not needed in print. */
+.nestedarrow,
+.reveal .controls,
+.reveal .progress,
+.reveal .playback,
+.reveal.overview,
+.fork-reveal,
+.share-reveal,
+.state-background {
+	display: none !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	text-shadow: 0 0 0 #000 !important;
+}
+
+.reveal pre code {
+	overflow: hidden !important;
+	font-family: Courier, 'Courier New', monospace !important;
+}
+
+ul, ol, div, p {
+	visibility: visible;
+	position: static;
+	width: auto;
+	height: auto;
+	display: block;
+	overflow: visible;
+	margin: auto;
+}
+.reveal {
+	width: auto !important;
+	height: auto !important;
+	overflow: hidden !important;
+}
+.reveal .slides {
+	position: static;
+	width: 100%;
+	height: auto;
+
+	left: auto;
+	top: auto;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	overflow: visible;
+	display: block;
+
+	-webkit-perspective: none;
+	   -moz-perspective: none;
+	    -ms-perspective: none;
+	        perspective: none;
+
+	-webkit-perspective-origin: 50% 50%; /* there isn't a none/auto value but 50-50 is the default */
+	   -moz-perspective-origin: 50% 50%;
+	    -ms-perspective-origin: 50% 50%;
+	        perspective-origin: 50% 50%;
+}
+
+.reveal .slides section {
+	page-break-after: always !important;
+
+	visibility: visible !important;
+	position: relative !important;
+	display: block !important;
+	position: relative !important;
+
+	margin: 0 !important;
+	padding: 0 !important;
+	box-sizing: border-box !important;
+	min-height: 1px;
+
+	opacity: 1 !important;
+
+	-webkit-transform-style: flat !important;
+	   -moz-transform-style: flat !important;
+	    -ms-transform-style: flat !important;
+	        transform-style: flat !important;
+
+	-webkit-transform: none !important;
+	   -moz-transform: none !important;
+	    -ms-transform: none !important;
+	        transform: none !important;
+}
+
+.reveal section.stack {
+	margin: 0 !important;
+	padding: 0 !important;
+	page-break-after: avoid !important;
+	height: auto !important;
+	min-height: auto !important;
+}
+
+.reveal img {
+	box-shadow: none;
+}
+
+.reveal .roll {
+	overflow: visible;
+	line-height: 1em;
+}
+
+/* Slide backgrounds are placed inside of their slide when exporting to PDF */
+.reveal section .slide-background {
+	display: block !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: -1;
+}
+
+/* All elements should be above the slide-background */
+.reveal section>* {
+	position: relative;
+	z-index: 1;
+}
+
+/* Display slide speaker notes when 'showNotes' is enabled */
+.reveal .speaker-notes-pdf {
+	display: block;
+	width: 100%;
+	max-height: none;
+	left: auto;
+	top: auto;
+	z-index: 100;
+}
+
+/* Display slide numbers when 'slideNumber' is enabled */
+.reveal .slide-number-pdf {
+	display: block;
+	position: absolute;
+	font-size: 14px;
+}
+
+</script>
+
+
+<script>
+var style = document.createElement( 'style' );
+style.type = 'text/css';
+var style_script_id = window.location.search.match( /print-pdf/gi ) ? 'pdf-css' : 'paper-css';
+var style_script = document.getElementById(style_script_id).text;
+style.innerHTML = style_script;
+document.getElementsByTagName('head')[0].appendChild(style);
+</script>
+
+    <script src="useCases_files/header-attrs-2.8/header-attrs.js"></script>
+    <link href="useCases_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+    <link href="useCases_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+  <div class="bottombar">
+    <h1 class="title"></h1><image class="logo" src="https://ecoads.eu/media/images/ECOSS_rgb.original.jpg" style="height: 100px;">
+  </div>
+</html>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">ECOAdS Geoportal - Tools</h1>
+  <h1 class="subtitle">Alessandro Oggioni &amp; Paolo Tagliolato</h1>
+    <h2 class="author">CNR-IREA</h2>
+    <h3 class="date">June 8, 2021</h3>
+</section>
+
+<section id="the-tools-allow-to" class="title-slide slide level1">
+<h1>The tools allow to:</h1>
+<ol type="1">
+<li><p>Evaluate the sites, both eLTER and Natura 2000 (N2K), contribution to the <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32008L0056">Marine Strategy Framework Directive (MSFD)</a> monitoring activity (<strong>Directive contribution</strong>)</p></li>
+<li><p>Evaluate the N2K sites contribute to the conservation of target species and habitats included in the site (<strong>Conservation strategy</strong>)</p></li>
+</ol>
+</section>
+
+<section>
+<section id="st-use-case" class="title-slide slide level1">
+<h1>1st use case</h1>
+<p>The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. <a href="https://www.lter-europe.net/lter-europe">Long Term Ecological Research (eLTER)</a> to the Marine Strategy Framework Directive (MSFD).</p>
+</section>
+<section id="section" class="slide level2" data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/">
+<h2 data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"></h2>
+<div class="fragment fade-out" style="position: absolute; width: 40%; left: 600px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;">
+<h2>Directive contribution tool</h2>
+<p>Click on the first arrow to access the first tool about the contribution to the Marine Strategy Framework Directive (MSFD) monitoring.</p>
+</div>
+</section>
+<section id="section-1" class="slide level2" data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=contribution">
+<h2 data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=contribution"></h2>
+<div class="fragment fade-out" style="position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;">
+<h2>Directive contribution tool</h2>
+<p>The graph show the site contribute to the MSFD. The parameters listed with the green checked circle represent the parameters monitored in the site that match with those deemed necessary to contribute to the MSFD criteria. The dark blue are all the MSFD criteria to which the parameters can contribute. The lines are meant to represent the connection between the parameters and the criteria.</p>
+<p>The table below reproduces the information provided in the graph: the parameters monitored and the MSFD criteria. A link to the ECOSS thesaurus for parameters and MSFD criteria has provided.</p>
+</div>
+</section></section>
+<section>
+<section id="nd-use-case" class="title-slide slide level1">
+<h1>2nd use case</h1>
+<p>The second use case is aimed at managers of <a href="https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm">Natura 2000 network</a> site that want to assess the contribution, of the site, to the species or habitat conservation strategy in order to implement and/or build a Management Plan.</p>
+</section>
+<section id="section-2" class="slide level2" data-background-iframe="https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/">
+<h2 data-background-iframe="https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/"></h2>
+<div class="fragment fade-out" style="position: absolute; width: 40%; left: 600px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;">
+<h2>Conservation strategy tool</h2>
+<p>Click on the second arrow to access the second tool about the evaluation of the conservation strategy.</p>
+</div>
+</section>
+<section id="section-3" class="slide level2" data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=conservation">
+<h2 data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=conservation"></h2>
+<div class="fragment fade-out" style="position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;">
+<h2>Conservation strategy tool</h2>
+<p>This graph show the site contribute to the conservarion strategy. The checked circle represent the recommended variables monitored in the site, while the light blue symbol represent the variable not measured. The target species protected in the site are represented by the organge icon. Finally also the protected habitats is/are show.</p>
+<p>Both, target species and habitat list, on demand from European Environmental Agency (EEA) Linked Data repository are collected.</p>
+</div>
+</section>
+<section id="section-4" class="slide level2" data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=conservation">
+<h2 data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&amp;tab=conservation"></h2>
+<div class="fragment fade-out" style="position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;">
+<h2>Conservation strategy tool</h2>
+<p>The tables below reproduce the information provided in the graph: target species, habitat, variables measured and not measured. These variables are indicated by ECOSS as fundamental for assessing the state of conservation of the specific target species/habitat.</p>
+</div>
+</section></section>
+<section id="visit-the-ecoads-webportal" class="title-slide slide level1">
+<h1>Visit the ECOAdS webportal</h1>
+<p>Continue to use the tools, visit the <a href="https://ecoads.eu/">ECOlogical observing system in the Adriatic Sea webportal</a></p>
+<p>The tools are release as open source Shiny app. The <a href="https://github.com/oggioniale/ECOSS-parametersDirectives">GitHub</a> repository is open for further insights, suggestions or information regarding future development.</p>
+</section>
+
+<section id="cite-the-tools" class="title-slide slide level1">
+<h1>Cite the tools</h1>
+<p>To cite <em>ECOSS Tools</em> please use:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bibtex"><code class="sourceCode bibtex"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">@software{alessandro_oggioni_2021_4638828,</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">  author       = {Alessandro Oggioni and</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co">                  Caterina Bergami},</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co">  title        = {{oggioniale/TeaCompositionCatalogue: First release </span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co">                   of tea composition catalogue}},</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">  month        = mar,</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">  year         = 2021,</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">  publisher    = {Zenodo},</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">  version      = {v1.0},</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">  doi          = {10.5281/zenodo.4638828},</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">  url          = {https://doi.org/10.5281/zenodo.4638828}</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">}</span></span></code></pre></div>
+</section>
+    </div>
+  </div>
+
+  <script src="useCases_files/reveal.js-3.3.0.1/lib/js/head.min.js"></script>
+  <script src="useCases_files/reveal.js-3.3.0.1/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        // Vertical centering of slides
+        center: true,
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+        // Transition style
+        transition: 'fade', // none/fade/slide/convex/concave/zoom
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+
+        menu: {
+   
+          numbers: true,
+    
+    
+    
+    
+    
+    
+ 
+          custom: false,
+          themes: false,
+          transitions: false
+        },
+
+
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'useCases_files/reveal.js-3.3.0.1/plugin/notes/notes.js', async: true },
+          { src: 'useCases_files/reveal.js-3.3.0.1/plugin/menu/menu.js', async: true },
+        ]
+      });
+    </script>
+
+<script>
+  (function() {
+    if (window.jQuery) {
+      Reveal.addEventListener( 'slidechanged', function(event) {  
+        window.jQuery(event.previousSlide).trigger('hidden');
+        window.jQuery(event.currentSlide).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+
+  </body>
+</html>
