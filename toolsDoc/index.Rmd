@@ -35,7 +35,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
 
-## {data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"}
+# {data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"}
 ```{r, echo=FALSE}
 library(htmltools)
 tags$div(
@@ -48,7 +48,7 @@ tags$div(
 )
 ```
 
-## {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=contribution"}
+# {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=contribution"}
 ```{r, echo=FALSE}
 library(htmltools)
 tags$div(
@@ -66,7 +66,7 @@ tags$div(
 
 The second use case is aimed at managers of [Natura 2000 network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm) site that want to assess the contribution, of the site, to the species or habitat conservation strategy in order to implement and/or build a Management Plan.
 
-## {data-background-iframe="https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/"}
+# {data-background-iframe="https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/"}
 ```{r, echo=FALSE}
 library(htmltools)
 tags$div(
@@ -79,7 +79,7 @@ tags$div(
 )
 ```
 
-## {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=conservation"}
+# {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=conservation"}
 ```{r, echo=FALSE}
 library(htmltools)
 tags$div(
@@ -95,7 +95,7 @@ tags$div(
 )
 ```
 
-## {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=conservation"}
+# {data-background-iframe="https://processing.get-it.it/shiny/ecoss/?siteid=2e6014fe-8f3b-4127-8ab1-405ae1303281&tab=conservation"}
 ```{r, echo=FALSE}
 library(htmltools)
 tags$div(
