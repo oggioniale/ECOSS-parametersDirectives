@@ -27,13 +27,13 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # The tools allow to:
 
-1. Evaluate the sites, both eLTER and Natura 2000 (N2K), contribution to the [Marine Strategy Framework Directive (MSFD)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32008L0056) monitoring activity (**Directive contribution**)
+1. Evaluate the eLTER and Natura 2000 (N2K) sites' contribution to the [Marine Strategy Framework Directive (MSFD)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32008L0056) monitoring activity (**Directive contribution**)
 
-2. Evaluate the N2K sites contribute to the conservation of target species and habitats included in the site (**Conservation strategy**)
+2. Evaluate the N2K sites' contribution to the conservation of target species and habitats included in the site (**Conservation strategy**)
 
 # 1st use case
 
-The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
+The first use case is designed for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
 
 # {data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"}
 ```{r, echo=FALSE}
@@ -64,7 +64,7 @@ tags$div(
 
 # 2nd use case
 
-The second use case is aimed at managers of [Natura 2000 network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm) site that want to assess the contribution, of the site, to the species or habitat conservation strategy in order to implement and/or build a Management Plan.
+The second use case is designed for those managers of [Natura 2000 network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm) site that want to assess the contribution of the site, to the species- or habitat-conservation strategy in order to implement and/or build a Management Plan.
 
 # {data-background-iframe="https://ecoads.eu/site/2e6014fe-8f3b-4127-8ab1-405ae1303281/"}
 ```{r, echo=FALSE}
@@ -87,10 +87,10 @@ tags$div(
   style = "position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;",
   tags$h2('Conservation strategy tool'),
   tags$p(
-    'This graph show the site contribute to the conservarion strategy. The checked circle represent the recommended variables monitored in the site, while the light blue symbol represent the variable not measured. The target species protected in the site are represented by the organge icon. Finally also the protected habitats is/are show.'
+    'This graph shows the site contribution to the conservarion strategy. Checked circles represent the recommended variables monitored in the site, while the light-blue symbol represents a variable that is not measured. The target species protected in the site are represented by the orange icon. Finally, also the protected habitats is/are shown.'
   ),
   tags$p(
-    'Both, target species and habitat list, on demand from European Environmental Agency (EEA) Linked Data repository are collected.'
+    'Target species and habitat list are retrieved in real time from the European Environmental Agency (EEA) Linked Data repository.'
   )
 )
 ```
