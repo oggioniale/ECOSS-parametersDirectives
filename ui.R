@@ -13,6 +13,7 @@ library('SPARQL')
 library('dplyr')
 # library(shinyjs)
 
+disableHeader=TRUE
 ###
 # UI
 ###
@@ -42,7 +43,8 @@ shinyUI(
         )#,
         # tags$li(class = "dropdown",
         #         actionButton("help", "Give me an overview", style="margin-right: 10px; margin-top: 8px; color: #fff; background-color: #0069D9; border-color: #0069D9")
-        # )
+        # ),
+        ,disable = disableHeader
       ),
       dashboardSidebar(
         collapsed = TRUE,
