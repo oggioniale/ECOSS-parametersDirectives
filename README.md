@@ -9,7 +9,7 @@
 
 [![](https://img.shields.io/github/languages/code-size/oggioniale/ECOSS-parametersDirectives.svg)](https://github.com/oggioniale/ECOSS-parametersDirectives)
 [![](https://img.shields.io/github/last-commit/oggioniale/ECOSS-parametersDirectives.svg)](https://github.com/oggioniale/ECOSS-parametersDirectives/commits/master)
-<!-- [![](https://img.shields.io/badge/doi-10.1111/2041--210X.12628-blue.svg)](https://doi.org/10.1111/2041-210X.12628) -->
+[![](https://img.shields.io/badge/doi-10.5281/zenodo.4944268-red.svg)](https://doi.org/10.5281/zenodo.4944268)
 <!-- badges: end -->
 
 *ECOSS Tools* are part of the implementation work done in the framework
@@ -28,8 +28,8 @@ sources already available in internet.
 
 ECOAdS includes two types of sites: Long Term Ecological Research (LTER)
 and Natura 2000 (N2K) sites, belonging to the [LTER
-network](https://www.lter-europe.net/lter-europe) and the Natura 2000
-network\](<https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm>),
+network](https://www.lter-europe.net/lter-europe) and the [Natura 2000
+network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm),
 respectively.
 
 *ECOSS Tools* allow to:
@@ -78,12 +78,25 @@ following documents and publications:
 
 To cite *ECOSS Tools* please use:
 
-…
+``` bibtex
+@software{alessandro_oggioni_2021_4944268,
+  author       = {Alessandro Oggioni and
+                  Paolo Tagliolato},
+  title        = {{oggioniale/ECOSS-parametersDirectives: First 
+                   release of ECOAdS tools}},
+  month        = jun,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.4944268},
+  url          = {https://doi.org/10.5281/zenodo.4944268}
+}
+```
 
-## :movie\_camera: Video tutorial
+## :movie\_camera: Tutorial
 
-[![IMAGE ALT TEXT
-HERE](https://img.youtube.com/vi/zW4GAl-_C9I/0.jpg)](https://www.youtube.com/watch?v=zW4GAl-_C9I)
+[A tutorial is available on the
+web.](https://ecoads.eu/static/toolsDoc/)
 
 ## :chart\_with\_downwards\_trend: Data exploited by the *ECOSS Tools*
 

@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 <!-- other badges https://github.com/GuangchuangYu/badger -->
 `r badger::badge_code_size("oggioniale/ECOSS-parametersDirectives")`
 `r badger::badge_last_commit("oggioniale/ECOSS-parametersDirectives")`
-<!-- `r badger::badge_doi("10.1111/2041-210X.12628", "blue")` -->
+`r badger::badge_doi("10.5281/zenodo.4944268", "red")`
 <!-- badges: end -->
 
 *ECOSS Tools* are part of the implementation work done in the framework of the [Interreg Italy-Croatia project ECOSS](https://www.italy-croatia.eu/) WP5 - Design and implementation of data infrastructure.
@@ -31,7 +31,7 @@ knitr::opts_chunk$set(
 *ECOSS Tools* aims at providing interactive applications to respond to the needs of the sites involved in the [ECOlogical observing system in the Adriatic Sea (ECOAdS)](https://ecoads.eu) for what concerns conservation strategies and the contribution to the main EU directives.
 The ECOSS Tools provide graphical representations of monitoring activities at the sites, leveraging the information collected by the ECOSS project by means of their integration with other information sources already available in internet.
 
-ECOAdS includes two types of sites: Long Term Ecological Research (LTER) and Natura 2000 (N2K) sites, belonging to the [LTER network](https://www.lter-europe.net/lter-europe) and the Natura 2000 network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm), respectively.
+ECOAdS includes two types of sites: Long Term Ecological Research (LTER) and Natura 2000 (N2K) sites, belonging to the [LTER network](https://www.lter-europe.net/lter-europe) and the [Natura 2000 network](https://ec.europa.eu/environment/nature/natura2000/awards/natura-2000-network/index_en.htm), respectively.
 
 *ECOSS Tools* allow to:
 
@@ -56,24 +56,25 @@ During the ECOSS project, great effort was devoted both to identify the paramete
 
 To cite *ECOSS Tools* please use:
 
-...
-
-
-## :movie_camera: Video tutorial
-
-```{r}
-# vembedr::embed_youtube(
-#   '',
-#   width = NULL,
-#   height = 300,
-#   ratio = c("16by9", "4by3"),
-#   frameborder = 0,
-#   allowfullscreen = TRUE,
-#   query = NULL
-# )
+``` bibtex
+@software{alessandro_oggioni_2021_4944268,
+  author       = {Alessandro Oggioni and
+                  Paolo Tagliolato},
+  title        = {{oggioniale/ECOSS-parametersDirectives: First 
+                   release of ECOAdS tools}},
+  month        = jun,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.4944268},
+  url          = {https://doi.org/10.5281/zenodo.4944268}
+}
 ```
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/zW4GAl-_C9I/0.jpg)](https://www.youtube.com/watch?v=zW4GAl-_C9I)
 
+
+## :movie_camera: Tutorial
+
+[A tutorial is available on the web.](https://ecoads.eu/static/toolsDoc/)
 
 ## :chart_with_downwards_trend: Data exploited by the *ECOSS Tools*
 

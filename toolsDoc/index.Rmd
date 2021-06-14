@@ -119,7 +119,16 @@ The [GitHub](https://github.com/oggioniale/ECOSS-parametersDirectives) repositor
 
 To cite *ECOSS Tools* please use:
 ``` bibtex
-@software{
- ...
+@software{alessandro_oggioni_2021_4944268,
+  author       = {Alessandro Oggioni and
+                  Paolo Tagliolato},
+  title        = {{oggioniale/ECOSS-parametersDirectives: First 
+                   release of ECOAdS tools}},
+  month        = jun,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.4944268},
+  url          = {https://doi.org/10.5281/zenodo.4944268}
 }
 ```
