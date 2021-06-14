@@ -32,7 +32,7 @@ tabItem(
       collapsible = TRUE,
       enable_sidebar = TRUE,
       sidebar_width = 25,
-      sidebar_start_open = TRUE,
+      sidebar_start_open = FALSE,
       sidebar_content = tagList(
         tags$p(
           'This graph show the site contribute to the conservarion strategy. The checked circle represent the recommended variables monitored in the site, 
@@ -45,7 +45,7 @@ tabItem(
       column(12, visNetwork::visNetworkOutput("network")
       )
     ),
-    fluidRow(
+  fluidRow(
       boxPlus(
         width = 6,
         title = "Target species", 

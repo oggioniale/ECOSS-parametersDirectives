@@ -8,6 +8,30 @@
 ###
 shinyServer(function(input, output, session) {
   
+  # ALERT ######
+  # Show a simple modal
+  shinyalert::shinyalert(
+    title = "Information about the use of the ECOAds Tools",
+    text = "<p>Here we provide 2 different examples of interction with the tools, we propose two use cases in order to verify the interaction and facilities of the tools.</p>
+        </br>
+        <p>The first use case is thinking for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. eLTER) to the Marine Strategy Framework Directive (MSFD).</p>
+        </br>
+        <p>The second use case is aimed at managers of Natura 2000 site that want to assess the contribution, of the site, to the species or habitat conservation strategy in order to implement and/or build a Management Plan.</p>",
+    closeOnEsc = TRUE,
+    closeOnClickOutside = FALSE,
+    html = TRUE,
+    type = "info",
+    showConfirmButton = TRUE,
+    confirmButtonText = "I know the use cases and I want to work on tools.",
+    confirmButtonCol = "#AEDEF4",
+    showCancelButton = TRUE,
+    cancelButtonText = "I want to have more information on how the two use cases can be solved with the tools developed in the ECOSS project.",
+    timer = 0,
+    imageUrl = "",
+    animation = TRUE,
+    callbackJS = "function(x) { if (x !== true) { window.open('https://ecoads.eu/static/toolsDoc/', '_blank'); } }"
+  )
+  
   output$testo <- renderText({
     # deimsId()
     id = n2kId()
@@ -52,8 +76,6 @@ shinyServer(function(input, output, session) {
   
   # for Queries ######
   fusekiEcoss <- "http://fuseki1.get-it.it/ecoss/query"
-  
-  # to be define!!!! #####
   
   queryConserv <- reactive({
     q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
@@ -126,12 +148,12 @@ shinyServer(function(input, output, session) {
       return(q)
     } else {
       q = paste0("select distinct ?site ?site_name ?site_manager ?site_respondent where{
-                  bind(<http://deims.org/",deimsId(),"> as ?site)
-                  bind('",dt_sites %>% filter(siteCodeDEIMS==deimsId()) %>% pull(name),"' as ?site_name)
+                  bind(<http://deims.org/", deimsId(),"> as ?site)
+                  bind('",dt_sites %>% filter(siteCodeDEIMS == deimsId()) %>% pull(name),"' as ?site_name)
                   bind('' as ?site_manager)
                   bind('' as ?site_respondent)}")
     }
-    
+    return(q)
   })
   
   siteInfo <- reactive({

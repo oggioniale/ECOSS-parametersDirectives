@@ -32,7 +32,7 @@ tabItem(
       collapsible = TRUE,
       enable_sidebar = TRUE,
       sidebar_width = 25,
-      sidebar_start_open = TRUE,
+      sidebar_start_open = FALSE,
       sidebar_content = tagList(
         tags$p(
           'This graph show the site contribute to the MSFD. The parameters listed with the green checked circle represent the parameters monitored in the site that
@@ -54,7 +54,7 @@ tabItem(
         collapsible = TRUE,
         enable_sidebar = TRUE,
         sidebar_width = 25,
-        sidebar_start_open = TRUE,
+        sidebar_start_open = FALSE,
         sidebar_content = tagList(
           tags$p(
             'The table reproduces the graph above. The parameters monitored and the MSFD criteria. 

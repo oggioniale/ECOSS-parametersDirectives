@@ -18,7 +18,7 @@ library('dplyr')
 ###
 shinyUI(
   fluidPage(
-    useShinyalert(),
+    shinyalert::useShinyalert(),
     # useShinyjs(),
     tags$head(tags$style(HTML('#network,#visNetworkPlot{height:700px !important;}'))),
     dashboardPagePlus(
@@ -26,13 +26,13 @@ shinyUI(
       collapse_sidebar = FALSE,
       dashboardHeaderPlus(
         title = tagList(
-          tags$span(class = "logo-lg", "ECOSS - Tools")#, 
+          tags$span(class = "logo-lg", "ECOSS - Tools")#,
           # tags$img(src = "http://www.get-it.it/assets/img/loghi/lter_leaf.jpg")
-        ), 
+        ),
         # fixed = FALSE,
         # enable_rightsidebar = TRUE,
         # rightSidebarIcon = "gears",
-        tags$li(class ="dropdown"#, 
+        tags$li(class ="dropdown"#,
                 # tags$a(
                 #   href="https://ecoads.eu/",
                 #   tags$img(src="https://ecoads.eu/media/images/ECOSS_rgb.max-165x165.jpg"),
