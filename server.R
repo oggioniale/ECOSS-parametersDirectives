@@ -158,7 +158,6 @@ shinyServer(function(input, output, session) {
   
   siteInfo <- 
     reactive({
-      # queryString <- parseQueryString(session$clientData$url_search)
       ISeLTERSite <- dt_sites$eLTERNetwork[dt_sites$siteCodeDEIMS == deimsId()]
       
       if (ISeLTERSite == TRUE) {

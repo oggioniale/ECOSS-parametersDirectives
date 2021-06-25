@@ -39,6 +39,7 @@ tabItem(
           match with those deemed necessary to contribute to the MSFD criteria. The dark blue are all the MSFD criteria to which the parameters can contribute. 
           The lines are meant to represent the connection between the parameters and the criteria.'
         ),
+        tags$p('Selecting one or more parameters or criteria elements, the content of the table below changes accordingly and dinamically.'),
         tags$p(tags$b("Press the 'i' to collapse this sidebar and start with the work."))
       ),
       column(12, visNetwork::visNetworkOutput("visNetworkPlot")

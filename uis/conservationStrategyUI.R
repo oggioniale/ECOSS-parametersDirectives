@@ -39,6 +39,8 @@ tabItem(
           while the light blue symbols represent the variables that are not measured yet. Target species protected in the site are represented by the orange icons.
           Finally, also the protected habitats are shown.' 
         ),
+        tags$p('A drop down menu, in the upper left corner of this box, allows to select the different elements (site, species, habitat and ECOSS variables) one by one.'),
+        tags$p('Selecting one or more elements visible in the graph, the content of the tables below changes accordingly and dinamically.'),
         tags$p('Both, target species and habitat list, on demand from European Environmental Agency (EEA) Linked Data repository are collected.'),
         tags$p(tags$b("Press the 'i' to collapse this sidebar and start with the work."))
       ),

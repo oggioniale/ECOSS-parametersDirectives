@@ -76,28 +76,54 @@ output$visNetworkPlot <- renderVisNetwork({
     addFontAwesome(name = "font-awesome-visNetwork") %>% 
     visLegend() %>% 
     visPhysics(solver = "barnesHut") %>% 
-    visExport()
-  # visIgraphLayout() %>%
-  # visOptions(manipulation = TRUE, nodesIdSelection = TRUE,
-  # highlightNearest = list(enabled = T, degree = 2, hover = T))
+    visExport() %>% 
+    visInteraction(keyboard = TRUE, multiselect = TRUE) %>% 
+    visIgraphLayout() %>% 
+    
+    #Use visEvents to turn set input$current_node_selection to list of selected nodes
+    visEvents(select = "function(data) {
+                Shiny.onInputChange('current_nodes_selection', data.nodes);
+                Shiny.onInputChange('current_edges_selection', data.edges);
+                ;}")
 })
+
 
 # List of parameters #####
 output$tblContrib <- DT::renderDataTable({
-  dfContrib <- contrib() %>% 
-    # dplyr::group_by(
-    #   msfd_criteria_label1
-    # ) %>%
-    # summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
-    dplyr::mutate(
-      `MSFD Parameters` = paste0('<a href="', sub('>', '', sub('<', '', msfd_Parameter)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', msfd_Parameter_label, '</a>'),
-      `MSFD Criteria` = paste0('<a href="', sub('>', '', sub('<', '', msfd_criteria)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ',
-                               paste0(sub('>', '', sub('<http://rdfdata.get-it.it/ecoss/msfd_', '', msfd_criteria, fixed = TRUE), fixed = TRUE), ' - ', msfd_criteria_label1),
-                               '</a>')#,
-      # `number of parameter(s) measured that contribute to the MSFD Criteria`
-    ) %>% 
-    dplyr::select(`MSFD Parameters`, `MSFD Criteria`) %>% 
-    dplyr::arrange(`MSFD Criteria`)
+  dfContrib <- 
+    if (is.null(input$current_nodes_selection)) {
+      contrib() %>% 
+        # dplyr::group_by(
+        #   msfd_criteria_label1
+        # ) %>%
+        # summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
+        dplyr::mutate(
+          `MSFD Parameters` = paste0('<a href="', sub('>', '', sub('<', '', msfd_Parameter)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', msfd_Parameter_label, '</a>'),
+          `MSFD Criteria` = paste0('<a href="', sub('>', '', sub('<', '', msfd_criteria)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ',
+                                   paste0(sub('>', '', sub('<http://rdfdata.get-it.it/ecoss/msfd_', '', msfd_criteria, fixed = TRUE), fixed = TRUE), ' - ', msfd_criteria_label1),
+                                   '</a>')#,
+          # `number of parameter(s) measured that contribute to the MSFD Criteria`
+        ) %>% 
+        dplyr::select(`MSFD Parameters`, `MSFD Criteria`) %>% 
+        dplyr::arrange(`MSFD Criteria`)
+    } else {
+      contrib() %>% 
+        dplyr::filter((msfd_Parameter %in% input$current_nodes_selection)|(msfd_criteria %in% input$current_nodes_selection)) %>% 
+        # dplyr::group_by(
+        #   msfd_criteria_label1
+        # ) %>%
+        # summarise(`number of parameter(s) measured that contribute to the MSFD Criteria` = sum(numeroParametriMisurati_ENVTHES_InerentiIlParametroMSFD)) %>% 
+        dplyr::mutate(
+          `MSFD Parameters` = paste0('<a href="', sub('>', '', sub('<', '', msfd_Parameter)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', msfd_Parameter_label, '</a>'),
+          `MSFD Criteria` = paste0('<a href="', sub('>', '', sub('<', '', msfd_criteria)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ',
+                                   paste0(sub('>', '', sub('<http://rdfdata.get-it.it/ecoss/msfd_', '', msfd_criteria, fixed = TRUE), fixed = TRUE), ' - ', msfd_criteria_label1),
+                                   '</a>')#,
+          # `number of parameter(s) measured that contribute to the MSFD Criteria`
+        ) %>% 
+        dplyr::select(`MSFD Parameters`, `MSFD Criteria`) %>% 
+        dplyr::arrange(`MSFD Criteria`)
+    }
+  
   actionContrib <- DT::dataTableAjax(session, dfContrib, outputId = "tblContrib")
   
   DT::datatable(

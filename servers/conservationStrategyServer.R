@@ -76,28 +76,53 @@ output$network <- renderVisNetwork({
     addFontAwesome(name = "font-awesome-visNetwork") %>% 
     visLegend() %>% 
     visPhysics(solver = "barnesHut") %>% 
-    visExport()
-  # visIgraphLayout() %>%
-  # visOptions(manipulation = TRUE, nodesIdSelection = TRUE,
-  # highlightNearest = list(enabled = T, degree = 2, hover = T))
+    visExport() %>% 
+    visInteraction(keyboard = TRUE, multiselect = TRUE) %>% 
+    visOptions(selectedBy = "group",
+               highlightNearest = FALSE,
+               nodesIdSelection = FALSE) %>% 
+    # Use visEvents to turn set input$current_node_selection to list of selected nodes
+    visEvents(select = "function(data) {
+                Shiny.onInputChange('current_nodes_selection', data.nodes);
+                Shiny.onInputChange('current_edges_selection', data.edges);
+                ;}")
 })
+
 
 # Target Species tblStrategySpecies #####
 speciesForSite <- c('')
 
 output$tblStrategySpecies <- DT::renderDataTable({
-  dfspecieInfo <- specieInfo() %>% 
-    # dplyr::filter(
-    #   species_label %in% speciesForSite
-    # ) %>%
-    mutate(
-      `Protected species` = paste('<a href="', sub('>', '', sub('<', '', species)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_label, '</a>', sep=""),
-      `LSID PESI` = paste('<a href="', paste0('http://www.lsid.info/resolver/?lsid=', sub('>', '', sub('<', '', species_PESI))), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_PESI, '</a>', sep="")
-    ) %>% 
-    dplyr::select(
-      `Protected species`,
-      `LSID PESI`
-    )
+  dfspecieInfo <- 
+    if (is.null(input$current_nodes_selection)) {
+      specieInfo() %>% 
+        # dplyr::filter(
+        #   species_label %in% speciesForSite
+        # ) %>%
+        mutate(
+          `Protected species` = paste('<a href="', sub('>', '', sub('<', '', species)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_label, '</a>', sep=""),
+          `LSID PESI` = paste('<a href="', paste0('http://www.lsid.info/resolver/?lsid=', sub('>', '', sub('<', '', species_PESI))), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_PESI, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `Protected species`,
+          `LSID PESI`
+        )
+    } else {
+      specieInfo() %>% 
+        dplyr::filter(species %in% input$current_nodes_selection) %>%
+        # dplyr::filter(
+        #   species_label %in% speciesForSite
+        # ) %>%
+        mutate(
+          `Protected species` = paste('<a href="', sub('>', '', sub('<', '', species)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_label, '</a>', sep=""),
+          `LSID PESI` = paste('<a href="', paste0('http://www.lsid.info/resolver/?lsid=', sub('>', '', sub('<', '', species_PESI))), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', species_PESI, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `Protected species`,
+          `LSID PESI`
+        )
+    }
+  
   actionStrategySpecies <- DT::dataTableAjax(session, dfspecieInfo, outputId = "tblStrategySpecies")
   
   DT::datatable(
@@ -116,21 +141,39 @@ output$tblStrategySpecies <- DT::renderDataTable({
   )
 })
 
+
 # Habitat tblStrategyHabitats #####
 habitatForSite <- c('')
 
 output$tblStrategyHabitats <- DT::renderDataTable({
-  dfhabitatInfo <- habitatInfo() %>% 
-    # dplyr::filter(
-    #   habitat_label %in% habitatForSite
-    # ) %>%
-    mutate(
-      `Protected habitat` = paste('<a href="', sub('>', '', sub('<', '', habitat)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', habitat_label, '</a>', sep="")
-    ) %>% 
-    dplyr::select(
-      `Protected habitat`,
-      `Habitat description` = habitat_description
-    )
+  dfhabitatInfo <- 
+    if (is.null(input$current_nodes_selection)) {
+      habitatInfo() %>% 
+        # dplyr::filter(
+        #   habitat_label %in% habitatForSite
+        # ) %>%
+        mutate(
+          `Protected habitat` = paste('<a href="', sub('>', '', sub('<', '', habitat)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', habitat_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `Protected habitat`,
+          `Habitat description` = habitat_description
+        )
+    } else {
+      habitatInfo() %>% 
+        dplyr::filter(habitat %in% input$current_nodes_selection) %>%
+        # dplyr::filter(
+        #   habitat_label %in% habitatForSite
+        # ) %>%
+        mutate(
+          `Protected habitat` = paste('<a href="', sub('>', '', sub('<', '', habitat)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', habitat_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `Protected habitat`,
+          `Habitat description` = habitat_description
+        )
+    }
+    
   actionStrategyHabitats <- DT::dataTableAjax(session, dfhabitatInfo, outputId = "tblStrategyHabitats")
   
   DT::datatable(
@@ -151,16 +194,32 @@ output$tblStrategyHabitats <- DT::renderDataTable({
 
 # ECOSS Recommended Variables but not measured tblEcossParamRecom #####
 output$tblEcossParamRecom <- DT::renderDataTable({
-  dfVarsRecom <- allVarsECOSS() %>% 
-    dplyr::filter(
-      is.na(isMeasured)
-    ) %>%
-    mutate(
-      `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
-    ) %>% 
-    dplyr::select(
-      `ECOSS variable`
-    )
+  dfVarsRecom <- 
+    if (is.null(input$current_nodes_selection)) {
+      allVarsECOSS() %>% 
+        dplyr::filter(
+          is.na(isMeasured)
+        ) %>%
+        mutate(
+          `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `ECOSS variable`
+        )
+    } else {
+      allVarsECOSS() %>% 
+        dplyr::filter(ecos_var_uri %in% input$current_nodes_selection) %>%
+        dplyr::filter(
+          is.na(isMeasured)
+        ) %>%
+        mutate(
+          `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `ECOSS variable`
+        )
+    }
+  
   actionVarsRecom <- DT::dataTableAjax(session, dfVarsRecom, outputId = "tblEcossParamRecom")
   
   DT::datatable(
@@ -181,16 +240,32 @@ output$tblEcossParamRecom <- DT::renderDataTable({
 
 # ECOSS Recommended Variables that are measured tblParamMeasured #####
 output$tblParamMeasured <- DT::renderDataTable({
-  dfVarsMeasured <- allVarsECOSS() %>% 
-    dplyr::filter(
-      isMeasured == TRUE
-    ) %>%
-    mutate(
-      `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
-    ) %>% 
-    dplyr::select(
-      `ECOSS variable`
-    )
+  dfVarsMeasured <- 
+    if (is.null(input$current_nodes_selection)) {
+      allVarsECOSS() %>% 
+        dplyr::filter(
+          isMeasured == TRUE
+        ) %>%
+        mutate(
+          `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `ECOSS variable`
+        )
+    } else {
+      allVarsECOSS() %>% 
+        dplyr::filter(ecos_var_uri %in% input$current_nodes_selection) %>%
+        dplyr::filter(
+          isMeasured == TRUE
+        ) %>%
+        mutate(
+          `ECOSS variable` = paste('<a href="', sub('>', '', sub('<', '', ecos_var_uri)), '" target="_blank">', '<i class="fa fa-link" aria-hidden="true"></i> ', ecos_var_label, '</a>', sep="")
+        ) %>% 
+        dplyr::select(
+          `ECOSS variable`
+        )
+    }
+    
   actionVarsMeasured <- DT::dataTableAjax(session, dfVarsMeasured, outputId = "tblParamMeasured")
   
   DT::datatable(
