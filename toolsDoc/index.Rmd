@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # 1st use case
 
-The first use case is designed for policy maker or reaserchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
+The first use case is designed for policy maker or researchers that want to assess the contribution of a monitoring site (e.g. [Long Term Ecological Research (eLTER)](https://www.lter-europe.net/lter-europe)) to the Marine Strategy Framework Directive (MSFD).
 
 # {data-background-iframe="https://ecoads.eu/site/96969205-cfdf-41d8-979f-ff881ea8dc8b/"}
 ```{r, echo=FALSE}
@@ -43,7 +43,7 @@ tags$div(
   style = "position: absolute; width: 40%; left: 600px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;",
   tags$h2('Directive contribution tool'),
   tags$p(
-    'Click on the first arrow to access the first tool about the contribution to the Marine Strategy Framework Directive (MSFD) monitoring.'
+    'Click on the first bullet point to access the first tool about the contribution to the Marine Strategy Framework Directive (MSFD) monitoring.'
   )
 )
 ```
@@ -56,7 +56,7 @@ tags$div(
   style = "position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;",
   tags$h2('Directive contribution tool'),
   tags$p(
-    'The graph show the site contribute to the MSFD. The parameters listed with the green checked circle represent the parameters monitored in the site that match with those deemed necessary to contribute to the MSFD criteria. The dark blue are all the MSFD criteria to which the parameters can contribute. The lines are meant to represent the connection between the parameters and the criteria.'
+    'The graph shows the site contributing to the MSFD. The parameters listed with the green checked circle represent the parameters monitored in the site that match with those deemed necessary to contribute to the MSFD criteria. The dark blue are all the MSFD criteria to which the parameters can contribute. The lines are meant to represent the connection between the parameters and the criteria.'
   ),
   tags$p('The table below reproduces the information provided in the graph: the parameters monitored and the MSFD criteria. A link to the ECOSS thesaurus for parameters and MSFD criteria has provided.')
 )
@@ -74,7 +74,7 @@ tags$div(
   style = "position: absolute; width: 40%; left: 600px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;",
   tags$h2('Conservation strategy tool'),
   tags$p(
-    'Click on the second arrow to access the second tool about the evaluation of the conservation strategy.'
+    'Click on the second bullet point to access the second tool about the evaluation of the conservation strategy.'
   )
 )
 ```
@@ -87,7 +87,7 @@ tags$div(
   style = "position: -546px; width: 40%; left: 657px; bottom: 50px; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(200, 200, 200, 0.9);  padding: 20px; font-size: 20px; text-align: left;padding-top: 20px;margin-left: -103px;border-top-width: 0px;border-top-style: solid;margin-top: -240px;margin-right: 0px;",
   tags$h2('Conservation strategy tool'),
   tags$p(
-    'This graph shows the site contribution to the conservarion strategy. Checked circles represent the recommended variables monitored in the site, while the light-blue symbol represents a variable that is not measured. The target species protected in the site are represented by the orange icon. Finally, also the protected habitats is/are shown.'
+    'This graph shows the site contribution to the conservation strategy. Checked circles represent the recommended variables monitored in the site, while the light-blue symbol represents a variable that is not measured. The target species protected in the site are represented by the orange icon. Finally, also the protected habitats is/are shown.'
   ),
   tags$p(
     'Target species and habitat list are retrieved in real time from the European Environmental Agency (EEA) Linked Data repository.'
@@ -117,7 +117,9 @@ The [GitHub](https://github.com/oggioniale/ECOSS-parametersDirectives) repositor
 
 # Cite the tools
 
-To cite *ECOSS Tools* please use:
+To cite *ECOSS Tools* please use DOI: **10.5281/zenodo.4944268**
+or Bibtex:
+
 ``` bibtex
 @software{alessandro_oggioni_2021_4944268,
   author       = {Alessandro Oggioni and
