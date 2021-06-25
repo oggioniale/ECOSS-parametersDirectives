@@ -156,30 +156,16 @@ shinyServer(function(input, output, session) {
     return(q)
   })
   
-  siteInfo <- 
-    reactive({
-      # queryString <- parseQueryString(session$clientData$url_search)
-      ISeLTERSite <- dt_sites$eLTERNetwork[dt_sites$siteCodeDEIMS == deimsId()]
-      
-      if (ISeLTERSite == TRUE) {
-        ReLTER::getSiteContact(deimsid = paste0('https://deims.org/', deimsId())) %>% 
-          dplyr::summarise(
-            site = paste0('<', uri, '>'),
-            site_name = title,
-            site_manager = generalInfo.fundingAgency[[1]]$name,
-            site_respondent = ''
-          )
-      } else {
-        # table structure granted in this case by querySite()
-        SPARQL::SPARQL(
-          curl_args = list(.encoding="UTF-8"),
-          url = fusekiEcoss, 
-          query = querySite()
-        )$results %>% 
-          as_tibble()
-      }
-    })
-    
+  siteInfo <- reactive({
+    # table structure granted in this case by querySite()
+    SPARQL::SPARQL(
+    curl_args = list(.encoding="UTF-8"),
+    url = fusekiEcoss, 
+    query = querySite()
+  )$results %>% 
+    as_tibble()
+  })
+  
   # query for specie info #####
   querySpecie <- reactive({
   q = paste0("PREFIX ecoss: <http://rdfdata.get-it.it/ecoss/>
