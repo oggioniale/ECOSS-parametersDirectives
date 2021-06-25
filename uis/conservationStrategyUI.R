@@ -13,12 +13,12 @@ tabItem(
       sidebar_start_open = TRUE,
       sidebar_content = tagList(
         tags$p(
-            'This box provides the general information as name of the site, institution managing the site and their addess.',
-            'In the case of Natura 2000 sites the information are collected directly from triplestore of European Environmental Agency (EEA, e.g. ',
+            'This box provides general information such as the name of the site, the institution managing the site, and their address.',
+            'In the case of Natura 2000 sites the information are collected directly from triple-store of European Environmental Agency (EEA, e.g. ',
             tags$a("Cres - Lošinj", href="https://eunis.eea.europa.eu/sites/HR3000161", target="_blank"),
-            '). For eLTER sites, ate the moment, only the title is visible. In both cases other information can be reached following the link, by cliking on the site name.'
+            '). For eLTER sites, at the moment, only the title is visible. In both cases, other information can be reached following the link, by cliking on the site name.'
         ),
-        tags$p(tags$b("Press the i for collaps this slidebar and start with the work."))
+        tags$p(tags$b("Press the i to collapse this slidebar and to start working."))
       ),
       column(12, htmlOutput("siteInfoStrategy")
       )
@@ -35,9 +35,9 @@ tabItem(
       sidebar_start_open = FALSE,
       sidebar_content = tagList(
         tags$p(
-          'This graph show the site contribute to the conservarion strategy. The checked circle represent the recommended variables monitored in the site, 
-          while the light blue symbol represent the variable not measured. The target species protected in the site are represented by the organge icon.
-          Finally also the protected habitats is/are show.' 
+          'This graph shows the site contribution to the conservation strategy. Checked circles represent recommended variables currently monitored within the site, 
+          while the light blue symbols represent the variables that are not measured yet. Target species protected in the site are represented by the orange icons.
+          Finally, also the protected habitats are shown.' 
         ),
         tags$p('Both, target species and habitat list, on demand from European Environmental Agency (EEA) Linked Data repository are collected.'),
         tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
@@ -59,10 +59,10 @@ tabItem(
         sidebar_start_open = TRUE,
         sidebar_content = tagList(
           tags$p(
-            'In this table the target species is/are listed as returned by the European Environmental Agency (EEA) Linked Data repository.
-            A link to the EEA and the unique LSID (',
+            'In this table target species are listed. They are retrieved from the European Environmental Agency (EEA) Linked Data repository.
+            Links to EEA and to unique LSID (',
             tags$a("Life Science Identifiers", href="http://www.lsid.info/", target="_blank"),
-            ') represented as a Uniform Resource Name (URN) for all species has provided.'
+            ') represented as a Uniform Resource Name (URN) for all species are provided.'
           ),
           tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
@@ -82,8 +82,8 @@ tabItem(
         sidebar_start_open = TRUE,
         sidebar_content = tagList(
           tags$p(
-            'In this table the protected habitats is/are listed as returned by the European Environmental Agency (EEA) Linked Data repository.
-            A link to the EEA for all habitats has provided.'
+            'In this table protected habitats are listed. They are retrieved from the European Environmental Agency (EEA) Linked Data repository.
+            Links to EEA for all habitats are provided.'
           ),
           tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
@@ -104,7 +104,7 @@ tabItem(
           tags$p(
             'The variables', tags$b('not measured'), 'and indicated by ECOSS as fundamental for assessing the state of 
             conservation of the specific target species/habitat are listed here.
-            A link to the ECOSS thesaurus for all variables has provided.'
+            Links to ECOSS thesaurus for all variables are provided.'
           ),
           tags$p(tags$b("Press the i to collapse this sidebar and start with the work."))
         ),
