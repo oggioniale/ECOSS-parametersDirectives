@@ -16,7 +16,7 @@ tabItem(
             'This box provides general information such as the name of the site, the institution managing the site, and their address.',
             'In the case of Natura 2000 sites the information are collected directly from triple-store of European Environmental Agency (EEA, e.g. ',
             tags$a("Cres - Lošinj", href="https://eunis.eea.europa.eu/sites/HR3000161", target="_blank"),
-            '). For eLTER sites the information are retrieved directly from ', tags$a("eLTER DEIMS-SDR information management system", href="https://deims.org/", target="_blank"), '. In both cases, other information can be reached following the link, by cliking on the site name.'
+            '). For eLTER sites, at the moment, only the title is visible. In both cases, other information can be reached following the link, by cliking on the site name.'
         ),
         tags$p(tags$b("Press the 'i' to collapse this sidebar and start with the work."))
       ),
