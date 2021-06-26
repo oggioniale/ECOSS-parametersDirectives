@@ -85,9 +85,9 @@ output$network <- renderVisNetwork({
     visEvents(select = "function(data) {
                 Shiny.onInputChange('current_nodes_selection', data.nodes);
                 Shiny.onInputChange('current_edges_selection', data.edges);
-                ;}")
+                ;}") %>% 
+    visInteraction(navigationButtons = TRUE)
 })
-
 
 # Target Species tblStrategySpecies #####
 speciesForSite <- c('')
